@@ -14,7 +14,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../uPy_APDS9960'))
+sys.path.insert(0, os.path.abspath('..'))
 
 
 # -- Project information -----------------------------------------------------
@@ -40,10 +40,18 @@ release = '0.0.1'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.intersphinx',
     'sphinx.ext.viewcode',
-    'sphinx.ext.githubpages',
-    'recommonmark',
 ]
+
+# Mock out micropython ourselves so that we can make const a lambda.
+import imp
+m = imp.new_module("micropython")
+m.const = lambda x: x
+sys.modules["micropython"] = m
+
+intersphinx_mapping = {'python': ('https://docs.python.org/3.4', None),'BusDevice': ('https://circuitpython.readthedocs.io/projects/busdevice/en/latest/', None),'CircuitPython': ('https://circuitpython.readthedocs.io/en/latest/', None)}
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
