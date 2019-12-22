@@ -3,7 +3,7 @@
 
 The ``APDS9960`` class
 *****************************
-.. autoclass:: uPy_APDS9960.APDS9960
+.. autoclass:: APDS9960
     :members:
     :undoc-members:
     :show-inheritance:
