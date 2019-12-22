@@ -1,4 +1,4 @@
-[![Documentation Status](https://readthedocs.org/projects/upy-apds9960/badge/?version=latest)](https://upy-apds9960.readthedocs.io/en/latest/?badge=latest)
+
 Introduction 
 ============
 | This a APDS9960/GY-9960LLC micropython library for proximity detection. 
