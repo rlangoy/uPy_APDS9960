@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'simpleble'
+project = 'uPy_APDS9960'
 copyright = '2020, USN'
 author = 'Rune Langøy'
 
