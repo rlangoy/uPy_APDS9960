@@ -1,5 +1,7 @@
-
-Introduction
+.. image:: https://readthedocs.org/projects/upy-apds9960/badge/?version=latest
+:target: https://upy-apds9960.readthedocs.io/en/latest/?badge=latest
+:alt: Documentation Status
+Introduction 
 ============
 | This a APDS9960/GY-9960LLC micropython library for proximity detection. 
 | Tested on ESP8266  
