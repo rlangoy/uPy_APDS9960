@@ -13,7 +13,7 @@ Example
 -------
 
 Example exposing more functions 
-.. literalinclude:: ../examples/proximity_apds9960.py
+.. literalinclude:: proximity_apds9960.py
     :caption: examples/proximity_apds9960.py
     :linenos:
 
@@ -21,7 +21,7 @@ IRQ Example
 -----------
 
 Example showing use of interrupts 
-.. literalinclude:: ../examples/irq_proximity_apds9960.py
+.. literalinclude:: irq_proximity_apds9960.py
     :caption: examples/irq_proximity_apds9960.py
     :linenos:
 
@@ -29,6 +29,6 @@ Low Memory Example
 ------------------
 
 Example showing use of low memory version 
-.. literalinclude:: ../examples/simple_proximity_apds9960lite.py
+.. literalinclude:: simple_proximity_apds9960lite.py
     :caption: examples/simple_proximity_apds9960lite.py
     :linenos:
