@@ -89,7 +89,7 @@ class APDS9960LITE :
 if __name__ == '__main__':
 
     i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
-    print("Lite APDS-9960 Proximity test")
+    print("Lite APDS-9960 Proximity test ")
 
     proxSensor=APDS9960LITE(i2c)
     proxSensor.enableProximity()
