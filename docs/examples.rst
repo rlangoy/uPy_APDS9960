@@ -8,11 +8,11 @@ Ensure your device works with this simple test.
     :caption: examples/simple_proximity_apds9960.py
     :linenos:
 
-
 Example 
 -------
 
 Example exposing more functions 
+
 .. literalinclude:: ../examples/proximity_apds9960.py
    :linenos:
 
@@ -20,6 +20,7 @@ IRQ Example
 -----------
 
 Example showing use of interrupts 
+
 .. literalinclude:: ../examples/irq_proximity_apds9960.py
    :linenos:
 
