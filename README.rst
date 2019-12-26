@@ -22,7 +22,7 @@ Usage Example
 
 .. code-block:: python
 
-   import machine
+  import machine
   from time import sleep_ms
   from uPy_APDS9960.APDS9960 import APDS9960
 
