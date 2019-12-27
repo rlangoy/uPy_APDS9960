@@ -20,8 +20,6 @@ Author(s): Rune Langøy  2019
 Licence GNU General Public License v3.0
         https://www.gnu.org/licenses/gpl-3.0.html
 """
-from micropython import const
-import machine
 from time import sleep,sleep_ms
 
 __version__ = "0.1.0-auto.0"
@@ -272,16 +270,9 @@ class APDS9960 :
         """Reads the APDS9960 proximity level (0 to 255 )
         """               
         return self._readByte(APDS9960_REG_PDATA)
-
-
   
     def clearProximityInt(self):
         self._readByte(0xE5)#(APDS9960_PICLEAR)
-
-
-    #def getProxGainCompEnable(self):
-        #APDS9960_CONFIG3 = 0x9F
-    #    return self.getVal(APDS9960_CONFIG3,0x1,5)
 
     def setProxGainCompEnable(self):
         #self.setVal(APDS9960_CONFIG3,0x1,5,val)
@@ -295,34 +286,3 @@ class APDS9960 :
         self._writeByte(0x89 ,0x0);  ##->> Proximity low threshold
         self._writeByte(0x8B ,0x14); ## ->>Proximity high threshold 
         self._writeByte(0x8C ,0x14);  ## ->>Persistance
-
-
-
-if __name__ == '__main__':
-    print("Starting APDS9960 Poximity test prog")
-    print("------------------------------------")
-    print("Proximity test SCL->Pin5  and SDA -> Pin 4 ")
-    i2c = machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
-    proxSensor=APDS9960(i2c,
-                        debug=True,
-                        photoGain = APDS9960_PGAIN_8X,
-                        ledCurrent = APDS9960_LED_DRIVE_12_5MA)
-    
-    print("Set prx-threshold")
-    proxSensor.setProximityInterruptThreshold(high=10,low=0,persistance=2)
-    print("proxSensor.enableProximitySensor()")
-    proxSensor.enableProximitySensor()
-    
-    #proxSensor.writeDef()
-    ProxThPin=machine.Pin(0, machine.Pin.IN ,machine.Pin.PULL_UP)
-    # Blue-led mouynted on ESP8266 Module
-    led = machine.Pin(2, machine.Pin.OUT)
-    led.value(1) # Turn led off
-    sleep_ms(50)
-
-    while True:
-        led.value(ProxThPin.value())
-        if(ProxThPin.value()==0):
-             print(proxSensor.readProximity )
-             proxSensor.clearProximityInt()
- 

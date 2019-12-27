@@ -1,4 +1,3 @@
-import machine
 from time import sleep,sleep_ms
 APDS9960_ADDR        = const(0x39)
 
@@ -70,40 +69,3 @@ class APDS9960LITE :
             Returns the device status.
             """
             return self._readByte(0x92)
-
-    def writeDef(self):
-             self._writeByte(0x80,0x25)     # PIEN,PEN,PON
-    #          _writeByte(0x89 ,0x0);  ##->> Proximity low threshold
-    #          _writeByte(0x8B ,0x14); ## ->>Proximity high threshold 
-    #          _writeByte(0x8C ,0x14);  ## ->>Persistance
-    #         _writeByte(0x8E ,0x40);
-     #       _writeByte(0x8F ,0x00);
-    #         _writeByte(0x90 ,0x01);
-    #         _writeByte(0x93 ,0x02);
-    #         _writeByte(0x9C ,0x10);
-    #         _writeByte(0x9D ,0x00);
-     #       _writeByte(0x9E ,0x00);
-     #       _writeByte(0x9F ,0x00);       
-
-
-if __name__ == '__main__':
-
-    i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
-    print("Lite APDS-9960 Proximity test ")
-
-    proxSensor=APDS9960LITE(i2c)
-    proxSensor.enableProximity()
-    proxSensor.setProximityInterruptThreshold(high=10,low=0,persistance=7)
-    proxSensor.enableProximityInterrupt()
-
-    ProxThPin=machine.Pin(0, machine.Pin.IN ,machine.Pin.PULL_UP)
-
-    sleep(.1)
-
-    while True:
-        sleep_ms(50)
-        
-        if(ProxThPin.value()==0):
-            print("proximity:", proxSensor.readProximity() )
-            proxSensor.clearInterrupt()  #one more time
-               
