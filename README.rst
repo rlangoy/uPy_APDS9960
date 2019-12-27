@@ -6,7 +6,7 @@ Introduction
     :alt: Documentation Status
 
 | This a APDS9960/GY-9960LLC micropython library for proximity detection. 
-| Tested on ESP8266
+| Tested on ESP8266EX / ESP12-E ( NodeMCU DEVKIT 1.0) 
 
 Work derived from 
        `python-apds9960 <https://github.com/liske/python-apds9960>`_
@@ -18,9 +18,9 @@ This driver depends on:
 * `MicroPython <http://micropython.org/>`_
 
 Tested on:
-      | GY-9960LLC - https://www.aliexpress.com/item/32738206621.html?spm=a2g0s.9042311.0.0.27424c4dhr0Uo7
-      | Node MCU v2
-      | MicroPython v1.11-613-g8ce69288e       
+      | Sensor:   `GY-9960LLC <https://www.aliexpress.com/item/32738206621.html>`_
+      | Devboard: Node MCU v1.0
+      | Firmware: `esp8266-20191220-v1.12.bi <http://micropython.org/resources/firmware/esp8266-20191220-v1.12.bin>`_        
 
 Usage Example
 =============
