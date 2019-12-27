@@ -1,4 +1,5 @@
-from time import sleep,sleep_ms
+from time import sleep
+from micropython import const
 APDS9960_ADDR        = const(0x39)
 
 class APDS9960LITE :
@@ -10,7 +11,7 @@ class APDS9960LITE :
         
         self._i2c=i2c
         self._writeByte(0x80,0) # APDS9960_ENABLE PON=0
-        sleep_ms(50)
+        sleep(.05)
         self._writeByte(0x80,0b00000001) # APDS9960_ENABLE PON=1
  
     def _writeByte(self,reg,val):

@@ -4,7 +4,6 @@ import os
 import sys
 	
 sys.path.insert(0, os.path.abspath('..'))
-#sys.path.insert(0, os.path.abspath('..'))
 
 # -- General configuration ------------------------------------------------
 
@@ -36,7 +35,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'USN APDS9960 Library'
+project = u'uPy_APDS9960 Library'
 copyright = u'2019 Rune Langøy'
 author = u'Rune Langøy'
 
@@ -136,7 +135,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'USNAPDS9960Library.tex', u'USNAPDS9960 Library Documentation',
+    (master_doc, 'uPy_APDS9960Library.tex', u'uPy_APDS9960 Library Documentation',
      author, 'manual'),
 ]
 
@@ -145,7 +144,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'USNAPDS9960library', u'USN APDS9960 Library Documentation',
+    (master_doc, 'uPy_APDS9960library', u'USN uPy_APDS9960 Library Documentation',
      [author], 1)
 ]
 
@@ -155,7 +154,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'USNAPDS9960Library', u'USN APDS9960 Library Documentation',
-     author, 'USNAPDS9960Library', 'One line description of project.',
+    (master_doc, 'uPy_APDS9960Library', u'USN uPy_APDS9960 Library Documentation',
+     author, 'uPy_APDS9960Library', 'One line description of project.',
      'Miscellaneous'),
 ]

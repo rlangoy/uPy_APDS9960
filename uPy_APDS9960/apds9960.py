@@ -2,8 +2,7 @@
 #                    GNU GENERAL PUBLIC LICENSE
 #                       Version 3, 29 June 2007
 #             https://www.gnu.org/licenses/gpl-3.0.html
-"""
-`APDS9960`
+"""`APDS9960`
 ====================================================
 Driver class for the APDS9960 / GY-9960LLC 
    Supports  proximity detection on esp8266
@@ -20,7 +19,9 @@ Author(s): Rune Langøy  2019
 Licence GNU General Public License v3.0
         https://www.gnu.org/licenses/gpl-3.0.html
 """
-from time import sleep,sleep_ms
+from time import sleep
+from micropython import const
+
 
 __version__ = "0.1.0-auto.0"
 __repo__ = "https://github.com/rlangoy/uPy_APDS9960.git"
@@ -74,7 +75,7 @@ class APDS9960 :
         
         self._writeByte(0x8C,0)       
         self._writeByte(APDS9960_REG_ENABLE,0) #power off
-        sleep_ms(30)
+        sleep(.03)
         self._writeByte(APDS9960_REG_ENABLE,0b00100101) #Power on
         
         #If Debug mode exit now :)
