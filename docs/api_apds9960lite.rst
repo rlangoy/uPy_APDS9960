@@ -1,11 +1,7 @@
 
 .. If you created a package, create one automodule per module in the package.
-API
-
-
-.. automodule:: uPy_APDS9960.apds9960
-   :members:
-
+APDS9960 Low memory implementation
+----------------------------------
 
 .. automodule:: uPy_APDS9960.apds9960lite
    :members:

@@ -16,10 +16,11 @@ Table of Contents
 
 
 .. toctree::
-    :caption: API Reference
-    :maxdepth: 3
+    :caption: API
+    :maxdepth: 1
 
-    api
+    api_apds9960 
+    api_apds9960lite
 
 
 .. toctree::
