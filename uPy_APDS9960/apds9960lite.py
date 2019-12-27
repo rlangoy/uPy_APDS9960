@@ -15,14 +15,35 @@ class APDS9960LITE :
         self._writeByte(0x80,0b00000001) # APDS9960_ENABLE PON=1
  
     def _writeByte(self,reg,val):
+        """Writes a I2C byte to the address APDS9960_ADDR (0x39)
+        :param reg: The I2C register that is writen to
+        :type reg: int
+        :param val: The I2C value to write in the range (0- 255)
+        :type val: int        
+        """
         self._i2c.writeto_mem(APDS9960_ADDR,reg,bytes((val,)))
 
+
     def _readByte(self,reg):
+        """Reads a I2C byte from the address APDS9960_ADDR (0x39)
+        :param reg: The I2C register to read
+        :type reg: int
+        :param val: The I2C value to write in the range (0- 255)
+        :type val: int 
+        :returns: a value in the range (0- 255)
+        :rtype: int      
+        """
+
         val =self._i2c.readfrom_mem(APDS9960_ADDR,reg, 1)
         return int.from_bytes(val, 'big', True)
 
         
     def enableProximity(self,on=True):
+        """Enable/Disable the proimity sensor
+        :param on: Enales / Disables the proximity sensor
+        (Default True)
+        :type reg: boolean
+        """
          # PEN - bit 2
         val=self._readByte(0x80)   # Get reg APDS9960_ENABLE
         if on == True:
