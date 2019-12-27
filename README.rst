@@ -5,6 +5,10 @@ Introduction
     :target: https://upy-apds9960.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
+.. raw:: html
+
+    <img src="https://github.com/rlangoy/uPy_APDS9960/raw/master/docs/images/breakoutboard.jpg" height="100px">
+    
 | This a APDS9960/GY-9960LLC micropython library for proximity detection. 
 | Tested on ESP8266EX / ESP12-E ( NodeMCU DEVKIT 1.0) 
 
