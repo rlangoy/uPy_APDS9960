@@ -1,10 +1,12 @@
 
 .. If you created a package, create one automodule per module in the package.
+API
+---
 
-.. automodule:: APDS9960
+.. automodule:: upy_apds9960.apds9960
    :members:
 
 
-.. automodule:: APDS9960LITE
+.. automodule:: upy_apds9960.apds9960lite
    :members:
 
