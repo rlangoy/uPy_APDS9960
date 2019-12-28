@@ -2,22 +2,25 @@
 #                    GNU GENERAL PUBLIC LICENSE
 #                       Version 3, 29 June 2007
 #             https://www.gnu.org/licenses/gpl-3.0.html
-"""`APDS9960`
+"""
+`APDS9960`
 ====================================================
-Driver class for the APDS9960 / GY-9960LLC 
-   Supports  proximity detection on esp8266
-   Tested on:
-       GY-9960LLC - https://www.aliexpress.com/item/32738206621.html?spm=a2g0s.9042311.0.0.27424c4dhr0Uo7
-       Node MCU v2
-       MicroPython v1.11-613-g8ce69288e       
-   Work derived from 
-       https://github.com/liske/python-apds9960/blob/master/apds9960
 
-Author(s): Rune Langøy  2019
-           Thomas Liske 2017  ( https://github.com/liske/python-apds9960/blob/master/apds9960 )
-
-Licence GNU General Public License v3.0
-        https://www.gnu.org/licenses/gpl-3.0.html
+|    Driver class for the APDS9960 / GY-9960LLC 
+|    Supports  proximity detection on esp8266
+|    Tested on:
+|       GY-9960LLC - https://www.aliexpress.com/item/32738206621.html?spm=a2g0s.9042311.0.0.27424c4dhr0Uo7
+|       Node MCU v2
+|       MicroPython v1.11-613-g8ce69288e       
+|    Work derived from 
+|      https://github.com/liske/python-apds9960/blob/master/apds9960
+|
+|    Author(s): 
+|       Rune Langøy  2019
+|       Thomas Liske 2017  ( https://github.com/liske/python-apds9960/blob/master/apds9960 )
+|
+|    Licence GNU General Public License v3.0
+|    https://www.gnu.org/licenses/gpl-3.0.html
 """
 from time import sleep
 from micropython import const
@@ -58,7 +61,42 @@ APDS9960_MODE_PROXIMITY_INT = const(5)
 #pylint: disable-msg=too-many-instance-attributes
 class APDS9960 :
     """
-    APDS9960 provide proximity driver services for  ASDS9960 with Device ID:  0xa8 
+      APDS9960 provide proximity driver services for  ASDS9960 with Device ID:  0xa8 
+
+    :param i2c: The I2C driver
+    :type i2C: machine.i2c
+    :param address: The APDS9960 I2C address (default 0x39)
+    :type address: int
+    :param debug: Enable/disable debug messages 
+    :type debug: bool
+    :param photoGain: Photo detector gain (1x,2x,4x,8x)
+    :type photoGain: int
+    :param ledCurrent: led current (100mA,50mA,25mA,12.5mA)
+    :type ledCurrent: iny
+    
+    :example:
+      .. code:: python
+
+        import machine
+        from uPy_APDS9960.APDS9960 import APDS9960
+
+        # Proximity Gain (PGAIN) values
+        APDS9960_PGAIN_1X = const(0)
+        APDS9960_PGAIN_2X = const(1)
+        APDS9960_PGAIN_4X = const(2)
+        APDS9960_PGAIN_8X = const(3)
+
+        # LED Drive values
+        APDS9960_LED_DRIVE_100MA  = const(0)
+        APDS9960_LED_DRIVE_50MA   = const(1)
+        APDS9960_LED_DRIVE_25MA   = const(2)
+        APDS9960_LED_DRIVE_12_5MA = const(3)
+
+        i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
+        proxSensor=APDS9960(i2c,
+                            debug=True,
+                            photoGain = APDS9960_PGAIN_8X,
+                            ledCurrent = APDS9960_LED_DRIVE_100MA)
     """
     def __init__(self,
                  i2c, 
@@ -102,45 +140,73 @@ class APDS9960 :
         print("Device ID: ",hex(self.getID))
         
     def _writeByte(self,reg,val):
+        """Writes a I2C byte to the address APDS9960_ADDR (0x39)
+
+            :param reg: The I2C register that is writen to
+            :type reg: int
+            :param val: The I2C value to write in the range (0- 255)
+            :type val: int        
+        """
         self._i2c.writeto_mem(APDS9960_ADDR,reg,bytes((val,)))
 
     def _readByte(self,reg):
-        val = self._i2c.readfrom_mem(APDS9960_ADDR,reg, 1)
+        """Reads a I2C byte from the address APDS9960_ADDR (0x39)
+
+        :param reg: The I2C register to read
+        :type reg: int
+
+        :param val: The I2C value to write in the range (0- 255)
+        :type val: int 
+
+        :returns: a value in the range (0- 255)
+        :rtype: int      
+        """
+
+        val =self._i2c.readfrom_mem(APDS9960_ADDR,reg, 1)
         return int.from_bytes(val, 'big', True)
 
     @property
     def getID(self):
-        """Prop: Return the APDS9960_ID deviceID"""
+        """ APDS9960 chip deviceID 
+
+            :getter: Returns the deviceID 
+            :type: int     
+        """        
         return self._readByte(APDS9960_ID)
 
     @property
     def proximityIntLowThreshold(self):
-        """Prop: Return the low threshold for proximity interrupts"""
+        """Low threshold for proximity interrupts
+        
+            :getter: Returns low threshold value (0-255)
+            :setter: Sets the low threshold value (0-255)
+            :type: int
+        """
         return self._readByte(APDS9960_REG_PILT)
     
     @proximityIntLowThreshold.setter
     def proximityIntLowThreshold(self,threshold):
-        """Sets the low threshold for proximity interrupts.
-             : low threshold value for interrupt to trigger
-        """  
         self._writeByte(APDS9960_REG_PILT,threshold)
 
     @property
     def proxIntHighThreshold(self):
-        """Returns the high threshold for proximity detection.
+        """Hihg threshold for proximity interrupts
+        
+            :getter: Returns high threshold value (0-255)
+            :setter: Sets the ighlow threshold value (0-255)
+            :type: int
         """
+
         return self._readByte(APDS9960_REG_PIHT)
     
     @proxIntHighThreshold.setter
     def proxIntHighThreshold(self, threshold):
-        """Sets the high threshold for proximity detection.
-        """
         self._writeByte(APDS9960_REG_PIHT, threshold)
 
-    def setProximityInterruptThreshold(self,high=0,low=20,persistance=4):   
-        print("setProximityInterruptThreshold")
-        self.proximityIntLowThreshold = low    #APDS9960_PILT
-        self.proxIntHighThreshold     = high  #APDS9960_PIHT
+    def setProximityInterruptThreshold(self,high=0,low=20,persistance=4): 
+
+        self.proximityIntLowThreshold = low    #writes to reg: APDS9960_PILT
+        self.proxIntHighThreshold     = high   #writes to reg:APDS9960_PIHT
     
         if (persistance>7) :
             persistance=7
@@ -155,39 +221,57 @@ class APDS9960 :
         """
         Status Register (0x93)
         The read-only Status Register provides the status of the device. The register is set to 0x04 at power-up.
-        Returns the device status.
+
+        :returns: Status register content: 
+
+        ::
+
+             PGSAT - bit6 - Proximity Saturation
+             PINT  - bit5 - Proximity Interrupt
+             PVALID- bit1 - Proximity Valid 
+
+        :rtype: int      
         """
         return self._readByte(0x92)
 
-    def setProximityGain(self, gain):
-        """Returns receiver gain for proximity detection.
-            Value    Gain
+    def setProximityGain(self, eGain):
+        """Sets the receiver gain for proximity detection.
+        
+        :param eGain: the reciever gain (0 -3)
+        :type geGainain: int
+     
+        ::
+
+            eGain    Gain
               0       1x
               1       2x
               2       4x
               3       8x
-            Args:
-                gain (int/enum) APDS9960_PGAIN_xx: value for the proximity gain
         """
         val=self._readByte(APDS9960_REG_CONTROL)
         # set bits in register to given value
-        gain &= 0b00000011
-        gain = gain << 2
+        eGain &= 0b00000011
+        eGain = eGain << 2
         val &= 0b11110011
-        val |= gain
+        val |= eGain
 
         #i2c.writeto_mem(APDS9960_ADDR,APDS9960_REG_CONTROL,bytes((val,)))
         self._writeByte(APDS9960_REG_CONTROL,val)
 
     def setLEDCurrent(self, eCurent):
-        """Sets LED current  for proximity and ALS.
-            Value    LED Current
-              0        100 mA
-              1         50 mA
-              2         25 mA
-              3         12.5 mA
-            Args:
-                eCurrent (int/enum): APDS9960_LED_DRIVE_xx value for the LED current 
+        """
+        Sets LED current for proximity and ALS.
+
+        :param eCurent: the LED current (0 -3)
+        :type eCurent: int
+
+        ::
+
+          eCurent  LED Current
+            0        100 mA
+            1         50 mA
+            2         25 mA
+            3         12.5 mA
         """
         val=self._readByte(APDS9960_REG_CONTROL)        
         
@@ -201,8 +285,9 @@ class APDS9960 :
 
     def setProximityIntEnable(self, enable):
         """Turns proximity interrupts on or off.
-            Args:
-                enable (bool): True to enable interrupts, False to turn them off
+    
+        :param enable: True to enable interrupts, False to turn them off
+        :type enable: bool
         """
         val = self._readByte(APDS9960_REG_ENABLE)
 
@@ -214,12 +299,21 @@ class APDS9960 :
         self._writeByte(APDS9960_REG_ENABLE,val)
 
     def getMode(self):
-        """Returns the mode-enable register (APDS9960_REG_ENABLE) values
+        """Returns the APDS9960 mode-enable register value
+
+        :returns: The APDS9960_REG_ENABLE register value (0- 255)
+        :rtype: int      
         """
         return self._readByte(APDS9960_REG_ENABLE)
 
     def setMode(self, mode, enable=True):
         """Sets the mode-enable register (APDS9960_REG_ENABLE) values
+
+        :param mode: bit to set/clear  (value 0 - 7 )
+        :type mode: int      
+        :param enable: True to set the mode bit, False to clear the mode bit
+        :type enable: bool
+   
         """
         reg_val = self.getMode()
 
@@ -255,8 +349,9 @@ class APDS9960 :
     # start the proximity sensor
     def enableProximitySensor(self, interrupts=True):
         """Turns proximity messuremtnt on 
-            Args:
-                interrupts (bool): True to enable interrupts, False to turn them off
+
+        :param interrupts: true to enable interrupts, False to turn it off
+        :type interrupts: bool
         """
         self.setProximityGain(self._APDS9960_DEFAULT_PGAIN)
         self.setLEDCurrent(self._APDS9960_DEFAULT_LDRIVE)
@@ -268,22 +363,15 @@ class APDS9960 :
 
     @property
     def readProximity(self):
-        """Reads the APDS9960 proximity level (0 to 255 )
-        """               
+        """Reads the APDS9960 proximity level
+
+            :getter: Returns the proximity level (0 - 255 ) 
+            :type: int     
+        """        
         return self._readByte(APDS9960_REG_PDATA)
   
     def clearProximityInt(self):
+        """Crears the proimity interrupt
+        IRQ HW output goes low (enables triggering of new IRQ)
+        """
         self._readByte(0xE5)#(APDS9960_PICLEAR)
-
-    def setProxGainCompEnable(self):
-        #self.setVal(APDS9960_CONFIG3,0x1,5,val)
-        val = self._readByte(0x9F)
-        val |= 0b00100000
-        self._writeByte(0x9F,val)
-
-
-    def writeDef(self):
-        self._writeByte(0x80,0x25)     # PIEN,PEN,PON
-        self._writeByte(0x89 ,0x0);  ##->> Proximity low threshold
-        self._writeByte(0x8B ,0x14); ## ->>Proximity high threshold 
-        self._writeByte(0x8C ,0x14);  ## ->>Persistance

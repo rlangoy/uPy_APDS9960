@@ -1,9 +1,18 @@
+"""`APDS9960LITE`
+====================================================
+Low memory Driver class for the APDS9960 
+
+    Author: Rune Langøy  2019
+ 
+    Licence GNU General Public License v3.0
+    https://www.gnu.org/licenses/gpl-3.0.html
+"""
 from time import sleep
 from micropython import const
 APDS9960_ADDR        = const(0x39)
 
 class APDS9960LITE :
-    """APDS9960 low memory driver that provides proximity driver services for  ASDS9960 with Device ID:  0xa8 
+    """APDS9960LITE low memory driver that provides proximity driver services for  ASDS9960 with Device ID:  0xa8 
 
     :param i2c: The I2C driver
     :type i2C: machine.i2c
@@ -17,10 +26,6 @@ class APDS9960LITE :
         i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))  # Creates I2C Driver on Pin 5 / 6
         proxSensor=APDS9960LITE(i2c)                                # Create APDS9960 Driver
         
-    Author: Rune Langøy  2019
- 
-    Licence GNU General Public License v3.0
-    https://www.gnu.org/licenses/gpl-3.0.html
     """
     def __init__(self,
                 i2c):
@@ -126,7 +131,10 @@ class APDS9960LITE :
         self.clearInterrupt(); 
 
     def readProximity(self):
-            """Reads the APDS9960 proximity level (0 to 255 )
+            """Reads the APDS9960 proximity level 
+
+            :returns: proximity as a value in the range (0- 255)
+            :rtype: int      
             """               
             return self._readByte(0x9c)
         
@@ -136,13 +144,14 @@ class APDS9960LITE :
             The read-only Status Register provides the status of the device. The register is set to 0x04 at power-up.
             Returns the device status.
 
-            :returns: Status register content: 
- 
-             .. code:: python
+            :returns: Status register content 
 
-                 PGSAT - bit6 - Proximity Saturation
-                 PINT  - bit5 - Proximity Interrupt
-                 PVALID- bit1 - Proximity Valid 
+            ::
+
+              PGSAT - bit6 - Proximity Saturation
+              PINT  - bit5 - Proximity Interrupt
+              PVALID- bit1 - Proximity Valid 
+
             :rtype: int      
             """
             return self._readByte(0x93)
