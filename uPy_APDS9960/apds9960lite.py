@@ -3,12 +3,32 @@ from micropython import const
 APDS9960_ADDR        = const(0x39)
 
 class APDS9960LITE :
-    """
-    APDS9960 low memory driver that provides proximity driver services for  ASDS9960 with Device ID:  0xa8 
+    """APDS9960 low memory driver that provides proximity driver services for  ASDS9960 with Device ID:  0xa8 
+
+    :param i2c: The I2C driver
+    :type i2C: machine.i2c
+    
+    :example:
+      .. code:: python
+
+        import machine 
+        from uPy_APDS9960.APDS9960LITE import APDS9960LITE
+        
+        i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))  # Creates I2C Driver on Pin 5 / 6
+        proxSensor=APDS9960LITE(i2c)                                # Create APDS9960 Driver
+        
+    Author: Rune Langøy  2019
+ 
+    Licence GNU General Public License v3.0
+    https://www.gnu.org/licenses/gpl-3.0.html
     """
     def __init__(self,
                 i2c):
-        
+        """Construct the APDS9960 driver class 
+
+        :param i2c: The I2C driver
+        :type i2C: machine.i2c
+        """        
         self._i2c=i2c
         self._writeByte(0x80,0) # APDS9960_ENABLE PON=0
         sleep(.05)
@@ -16,6 +36,7 @@ class APDS9960LITE :
  
     def _writeByte(self,reg,val):
         """Writes a I2C byte to the address APDS9960_ADDR (0x39)
+
         :param reg: The I2C register that is writen to
         :type reg: int
         :param val: The I2C value to write in the range (0- 255)
@@ -26,10 +47,13 @@ class APDS9960LITE :
 
     def _readByte(self,reg):
         """Reads a I2C byte from the address APDS9960_ADDR (0x39)
+
         :param reg: The I2C register to read
         :type reg: int
+
         :param val: The I2C value to write in the range (0- 255)
         :type val: int 
+
         :returns: a value in the range (0- 255)
         :rtype: int      
         """
@@ -40,9 +64,10 @@ class APDS9960LITE :
         
     def enableProximity(self,on=True):
         """Enable/Disable the proimity sensor
-        :param on: Enales / Disables the proximity sensor
-        (Default True)
-        :type reg: boolean
+
+        :param on: Enables / Disables the proximity sensor
+                (Default True)
+        :type on: bool
         """
          # PEN - bit 2
         val=self._readByte(0x80)   # Get reg APDS9960_ENABLE
@@ -53,7 +78,20 @@ class APDS9960LITE :
         
         self._writeByte(0x80,val) #write APDS9960_ENABLE
 
-    def setProximityInterruptThreshold(self,high=0,low=20,persistance=4):   
+    def setProximityInterruptThreshold(self,high=0,low=20,persistance=4):
+        """Enable/Disable the proimity sensor
+
+        :param high: high level for generating proximity hardware interrupt (Range 0 - 255)
+        :type high: int 
+
+        :param low: low level for generating proximity hardware interrupt (Range 0 - 255)
+        :type low: int 
+
+        :param persistance: Number of consecutive reads before IRQ is raised (Range 0 - 7)
+        :type persistance: int 
+
+        """
+   
         self._writeByte(0x89, low);   #APDS9960_PILT
         self._writeByte(0x8B, high);  #APDS9960_PIHT
         
@@ -66,10 +104,18 @@ class APDS9960LITE :
         self._writeByte(0x8C,val) # Update APDS9960_PERS
         
     def clearInterrupt(self):
-         self._writeByte(0xE7,0) #  APDS9960_AICLEAR clear all interrupts
-         self._readByte(0xE5)#(APDS9960_PICLEAR)
+        """Crears the proimity interrupt
+        IRQ HW output goes low (enables triggering of new IRQ)
+        """
+        self._writeByte(0xE7,0) #  APDS9960_AICLEAR clear all interrupts
+        self._readByte(0xE5)#(APDS9960_PICLEAR)
      
     def enableProximityInterrupt(self,on=True):
+        """Enables/Disables IRQ dependent on limits given by setProximityInterruptThreshold()
+
+        :param on: Enable / Disable Hardware IRQ  
+        :type on: bool 
+        """
         val=self._readByte(0x80)      # Read APDS9960_ENABLE
         if on == True:
             val=val | (1<<5)     # APDS9960_ENABLE   (PIEN -bit 5)
@@ -89,5 +135,14 @@ class APDS9960LITE :
             Status Register (0x93)
             The read-only Status Register provides the status of the device. The register is set to 0x04 at power-up.
             Returns the device status.
+
+            :returns: Status register content: 
+ 
+             .. code:: python
+
+                 PGSAT - bit6 - Proximity Saturation
+                 PINT  - bit5 - Proximity Interrupt
+                 PVALID- bit1 - Proximity Valid 
+            :rtype: int      
             """
-            return self._readByte(0x92)
+            return self._readByte(0x93)
