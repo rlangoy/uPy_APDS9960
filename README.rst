@@ -13,8 +13,12 @@ Introduction
 | This a APDS9960/GY-9960LLC micropython library for proximity detection. 
 | Tested on ESP8266EX / ESP12-E ( NodeMCU DEVKIT 1.0) 
 
-Work derived from 
-       `python-apds9960 <https://github.com/liske/python-apds9960>`_
+
+Documentation 
+=============
+Complete documentation is hosted on the "Read the Docs" page 
+`upy-apds9960.readthedocs.io <https://upy-apds9960.readthedocs.io>`_
+
 
 Installation and Dependencies
 =============================
@@ -84,11 +88,6 @@ Then initialize the library.
 
   i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
   proxSensor = APDS9960(i2c)
-
-Doc
-===
-
-`readtherocs <https://upy-apds9960.readthedocs.io/en/latest/>`_
 
 
 Contributing
