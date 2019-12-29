@@ -50,7 +50,17 @@ Usage Example
 Hardware Set-up
 ---------------
 
-Connect Vin to 3.3 V or 5 V power source, GND to ground, SCL and SDA to the appropriate pins.
+Connect Vin to 3.3 V or 5 V power source, GND to ground, SCL and SDA to the appropriate pins to the NooeMCU Devboard
+
+========== ====== ============ ======== ==============
+APDS9960   Name   Remarks      NodeMcu  Pin  Function  
+========== ====== ============ ======== ==============
+1           VIN    +3.3V Power  3V3      +3.3V Power           
+2           GND    Ground       GND      GND           
+3           SCL    I2C clock    D1       GPIO 5 (SCL)   
+4           SDA    I2C Data     D2       GPIO 4 (SDA)   
+5           INT    Interrupt    D3       GPIO 0   
+========== ====== ============ ======== ==============
 
 .. raw:: html
 
