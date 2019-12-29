@@ -14,6 +14,10 @@ Table of Contents
 
     examples
 
+.. toctree::
+    :caption: Thony Tutorial
+
+    thonny_guide
 
 .. toctree::
     :caption: API
