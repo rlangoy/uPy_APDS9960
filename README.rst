@@ -7,7 +7,7 @@ Introduction
 
 |
 
-.. image:: images/breakoutboard.jpg
+.. image:: https://github.com/rlangoy/uPy_APDS9960/blob/master/docs/images/breakoutboard.jpg
     :alt: APDS9960 Breakoutboard
 
 | This a APDS9960/GY-9960LLC micropython library for proximity detection. 
@@ -52,7 +52,7 @@ Hardware Set-up
 
 Connect Vin to 3.3 V or 5 V power source, GND to ground, SCL and SDA to the appropriate pins.
 
-.. image:: images/APDS9960hookup.PNG
+.. image:: https://github.com/rlangoy/uPy_APDS9960/blob/master/docs/images/APDS9960hookup.PNG
     :alt: APDS9960 hookup guide
 
 Basics
