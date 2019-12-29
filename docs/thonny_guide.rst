@@ -114,4 +114,4 @@ Click the stop icon to stop the program and return the command prompt
 .. image:: images/thonny/RestartESP8266.PNG
   :alt: Shows ESP8266 software reset
 
-  Have fun :)
+Have fun :)
