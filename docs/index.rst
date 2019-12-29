@@ -15,7 +15,7 @@ Table of Contents
     examples
 
 .. toctree::
-    :caption: Thony Tutorial
+    :caption: Tutorial
 
     thonny_guide
 
