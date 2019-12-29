@@ -46,20 +46,20 @@ Seting up Micropython (ESP8266) dev enviroment
 
 From the menu "Run" select "Select intepreter..."
 
-.. image:: images/thonny/select_intep.PNG
+.. image:: images/thonny/select_intep.png
   :alt: Select python intepreter to ESP8266
 
 
 The ESP8266 firmware install/upgrade dialog is shown
 
-.. image:: images/thonny/ESP8266_FirmwareUp_Box1.PNG
+.. image:: images/thonny/ESP8266_FirmwareUp_Box1.png
   :alt: Shows ESP8266 firmware options dialog
 
 Make sure thet the ESP8266 development kit is connected.
 Select the "port dropdown" arrow to select the serial port for flashing the ESP8266.
 
 
-.. image:: images/thonny/ESP8266_FirmwareUp_Box2.PNG
+.. image:: images/thonny/ESP8266_FirmwareUp_Box2.png
   :alt: Shows ESP8266 firmware options dialog
 
 
