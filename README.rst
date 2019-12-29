@@ -51,6 +51,10 @@ Hardware Set-up
 
 Connect Vin to 3.3 V or 5 V power source, GND to ground, SCL and SDA to the appropriate pins.
 
+.. raw:: html
+
+    <img src="https://github.com/rlangoy/uPy_APDS9960/raw/master/docs/images/APDS9960hookup.PNG" height="200px">
+
 Basics
 ------
 
