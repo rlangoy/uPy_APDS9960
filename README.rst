@@ -5,10 +5,11 @@ Introduction
     :target: https://upy-apds9960.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
-.. raw:: html
+|
 
-    <img src="https://github.com/rlangoy/uPy_APDS9960/raw/master/docs/images/breakoutboard.jpg" height="100px">
-    
+.. image:: images/breakoutboard.jpg
+    :alt: APDS9960 Breakoutboard
+
 | This a APDS9960/GY-9960LLC micropython library for proximity detection. 
 | Tested on ESP8266EX / ESP12-E ( NodeMCU DEVKIT 1.0) 
 
@@ -51,9 +52,8 @@ Hardware Set-up
 
 Connect Vin to 3.3 V or 5 V power source, GND to ground, SCL and SDA to the appropriate pins.
 
-.. raw:: html
-
-    <img src="https://github.com/rlangoy/uPy_APDS9960/raw/master/docs/images/APDS9960hookup.PNG" height="300px">
+.. image:: images/APDS9960hookup.PNG
+    :alt: APDS9960 hookup guide
 
 Basics
 ------

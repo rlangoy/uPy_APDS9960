@@ -25,6 +25,8 @@ Table of Contents
 
 .. toctree::
     :caption: Related Libraries
+    :maxdepth: 1
+
     Thomas Liske , Python APDS-9960 Library <https://github.com/liske/python-apds9960>
     Adafruit,  APDS9960 Proximity, Light, RGB, and Gesture Sensor <https://www.adafruit.com/product/3595>
 
