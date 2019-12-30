@@ -37,6 +37,7 @@ Installation
 * Copy the folder uPy_APDS9960 and content (apds9960.py and apds9960lite.py) to the ESP8266 root folder
 
 The steps above is descsribed in the `Thonny IDE tutorial <docs/thonny_guide>`_
+
 Usage Example
 =============
 
