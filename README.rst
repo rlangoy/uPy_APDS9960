@@ -36,7 +36,11 @@ Installation
 * Flash the ESP8266 with MicroPython
 * Copy the folder uPy_APDS9960 and content (apds9960.py and apds9960lite.py) to the ESP8266 root folder
 
-The steps above is descsribed in the `Thonny IDE tutorial <https://github.com/rlangoy/uPy_APDS9960/blob/master/docs/thonny_guide.rst>`_
+The steps above is descsribed in the `Thonny IDE tutorial`_.
+
+.. _Thonny IDE tutorial: docs/thonny_guide.rst
+
+
 
 Usage Example
 =============
