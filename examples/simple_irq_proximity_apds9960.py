@@ -1,12 +1,15 @@
 import machine
 from time import sleep_ms
 from uPy_APDS9960.APDS9960LITE import APDS9960LITE
-    
+
 i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
-print("Lite APDS-9960 Proximity test ")
 
 apds9960=APDS9960LITE(i2c)
+apds9960.prox.eLEDCurrent    =0 # LED_DRIVE_100MA    
+apds9960.prox.eProximityGain =3 # PGAIN_8X   
 apds9960.prox.enableProximity()
+
+#IRQ Functionalities
 apds9960.prox.setProximityInterruptThreshold(high=10,low=0,persistance=7)
 apds9960.prox.enableProximityInterrupt()
 
@@ -18,5 +21,5 @@ while True:
     sleep_ms(50)
 
     if(ProxThPin.value()==0):
-        print("proximity:", apds9960.prox.readProximity() )
-        apds9960.prox.clearInterrupt()  #one more time
+        print("proximity:", apds9960.prox.readProximity )
+        apds9960.prox.clearInterrupt()  

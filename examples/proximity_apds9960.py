@@ -1,6 +1,6 @@
 import machine
 from time import sleep_ms
-from uPy_APDS9960.APDS9960 import APDS9960
+from uPy_APDS9960.APDS9960LITE import APDS9960LITE
 
 # Proximity Gain (PGAIN) values
 APDS9960_PGAIN_1X = const(0)
@@ -15,13 +15,14 @@ APDS9960_LED_DRIVE_25MA   = const(2)
 APDS9960_LED_DRIVE_12_5MA = const(3)
 
 i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
-proxSensor=APDS9960(i2c,
-                    debug=True,
-                    photoGain = APDS9960_PGAIN_8X,
-                    ledCurrent = APDS9960_LED_DRIVE_100MA)
 
-proxSensor.enableProximitySensor()
+apds9960=APDS9960LITE(i2c)
+apds9960.prox.eLEDCurrent   =APDS9960_LED_DRIVE_100MA    
+apds9960.prox.eProximityGain=APDS9960_PGAIN_8X   
+apds9960.prox.enableProximity()
+
+sleep_ms(50)
 
 while True:
-        sleep_ms(25) # wait for readout to be ready
-        print(proxSensor.readProximity)
+    sleep_ms(50)
+    print("proximity:", apds9960.prox.readProximity )

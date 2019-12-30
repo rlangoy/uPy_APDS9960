@@ -24,6 +24,27 @@ class I2CEX:
                  address):
         self.__i2c=i2c
         self.__address=address
+        
+    def __regWriteBit(self,reg,bitPos,bitVal):
+        """Reads a I2C register byte changes a bit and writes the new value
+
+            :param reg: The I2C register that is writen to
+            :type reg: int
+
+            :param bitPos: The bit position (0 - 7)
+            :type bitPos: int        
+            
+            :param value: True = set-bit / False =clear bit
+            :type value: bool        
+        """
+        val=self.__readByte(reg)   # read reg 
+        if bitVal == True:
+            val=val | (1<<bitPos)  # set bit
+        else:
+            val=val & ~(1<<bitPos) # clear bit
+        
+        self.__writeByte(reg,val) #write reg
+  
     
     def __writeByte(self,reg,val):
         """Writes a I2C byte to the address APDS9960_ADDR (0x39)
@@ -70,13 +91,8 @@ class PROX(I2CEX) :
         :type on: bool
         """
          # PEN - bit 2
-        val=super().__readByte(0x80)   # Get reg APDS9960_ENABLE
-        if on == True:
-            val=val | (1<<2)  # APDS9960_ENABLE 
-        else:
-            val=val & ~(1<<2) # APDS9960_ENABLE )
-        
-        super().__writeByte(0x80,val) #write APDS9960_ENABLE
+        PEN=2  #Proximity enable bit 2 (PEN) in reg APDS9960_REG_ENABLE
+        super().__regWriteBit(reg=0x80,bitPos=PEN,bitVal=on)
 
     def setProximityInterruptThreshold(self,high=0,low=20,persistance=4):
         """Enable/Disable the proimity sensor
@@ -91,8 +107,8 @@ class PROX(I2CEX) :
         :type persistance: int 
 
         """   
-        super().__writeByte(0x89, low);   #APDS9960_PILT
-        super().__writeByte(0x8B, high);  #APDS9960_PIHT
+        super().__writeByte(0x89, low);   #set low proximity threshold APDS9960_PILT
+        super().__writeByte(0x8B, high);  #set high proximity threshold APDS9960_PIHT
         
         if (persistance>7) :
             persistance=7
@@ -115,22 +131,88 @@ class PROX(I2CEX) :
         :param on: Enable / Disable Hardware IRQ  
         :type on: bool 
         """
-        val=super().__readByte(0x80)      # Read APDS9960_ENABLE
-        if on == True:
-            val=val | (1<<5)     # APDS9960_ENABLE   (PIEN -bit 5)
-        else:
-            val=val & ~(1<<5)    # APDS9960_ENABLE )
-        
-        super().__writeByte(0x80,val)     # write APDS9960_ENABLE
+        PIEN=5    #Proximity interrupt enable bit 5 (PIEN) in reg APDS9960_REG_ENABLE
+        super().__regWriteBit(reg=0x80,bitPos=PIEN,bitVal=on)
         self.clearInterrupt(); 
 
-    def readProximity(self):
-            """Reads the APDS9960 proximity level 
+    @property
+    def eProximityGain(self):
+        """Sets the receiver gain for proximity detection.
 
-            :returns: proximity as a value in the range (0- 255)
-            :rtype: int      
-            """               
-            return super().__readByte(0x9c)
+        :getter: Returns the reciever gain (0 -3)
+        :setter: Sets the reciever gain (0 -3)
+        :type: int
+
+        ::
+
+            eGain    Gain
+              0       1x
+              1       2x
+              2       4x
+              3       8x
+        """
+        #APDS9960_REG_CONTROL = const(0x8f)
+        val=super().__readByte(0x8f)
+        val=((val >>2) & 0b00000011) 
+        return val
+ 
+    @eProximityGain.setter
+    def eProximityGain(self, eGain):
+        #APDS9960_REG_CONTROL = const(0x8f)
+        val=super().__readByte(0x8f)
+        # set bits in register to given value
+        eGain &= 0b00000011
+        eGain = eGain << 2
+        val &= 0b11110011
+        val |= eGain
+
+        #i2c.writeto_mem(APDS9960_ADDR,APDS9960_REG_CONTROL,bytes((val,)))
+        super().__writeByte(0x8f,val)
+
+    @property
+    def eLEDCurrent(self):
+        """
+        Sets LED current for proximity and ALS.
+
+        :getter: Returns the LED current (0 -3)
+        :setter: Sets the LED current(0 -3)
+        :type: int
+
+        ::
+
+          eCurent  LED Current
+            0        100 mA
+            1         50 mA
+            2         25 mA
+            3         12.5 mA
+        """
+        #APDS9960_REG_CONTROL = const(0x8f)
+        val=super().__readByte(0x8f)
+        val=val >>6
+        return val
+  
+       
+    @eLEDCurrent.setter
+    def eLEDCurrent(self, eCurent):
+        #APDS9960_REG_CONTROL = const(0x8f)
+        val=super().__readByte(0x8f)        
+        
+        # set bits in register to given value
+        eCurent &= 0b00000011
+        eCurent = eCurent << 6
+        val &= 0b00111111
+        val |= eCurent
+
+        super().__writeByte(0x8f,val)
+
+    @property
+    def readProximity(self):
+        """Reads the APDS9960 proximity level
+
+            :getter: Returns the proximity level (0 - 255 ) 
+            :type: int     
+        """        
+        return super().__readByte(0x9c)
     
 
 class APDS9960LITE(I2CEX) :
@@ -166,6 +248,21 @@ class APDS9960LITE(I2CEX) :
     prox = None
     """APDS9960 Proximity functions :class:`.PROX`"""
 
+    def enablePower(self):
+        """Power on APDS-9960
+        """
+        #APDS9960_REG_ENABLE  = const(0x80)
+        PON=0
+        super().__regWriteBit(0x80,PON, True)
+
+
+    def disablePower(self):
+        """Power off APDS-9960
+        """
+        #APDS9960_REG_ENABLE  = const(0x80)
+        PON=0
+        super().__regWriteBit(0x80,PON, False)
+
     def statusRegister(self):
             """
             Status Register (0x93)
@@ -183,6 +280,34 @@ class APDS9960LITE(I2CEX) :
             :rtype: int      
             """
             return super().__readByte(0x93)
+if __name__ == "__main__":
+
+    import machine
+    from time import sleep_ms
+        
+    i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
+    print("Lite APDS-9960 Proximity test ")
+
+    apds9960=APDS9960LITE(i2c)
+    apds9960.prox.enableProximity()
+    apds9960.prox.setProximityInterruptThreshold(high=10,low=0,persistance=7)
+    apds9960.prox.enableProximityInterrupt()
+    apds9960.prox.eLEDCurrent=0     #0-> 100 mA (max)
+    apds9960.prox.eProximityGain=3  #3-> gain x8 (max)
+    print("eProximityGain", apds9960.prox.eProximityGain)
+    print("eLEDCurrent ",apds9960.prox.eLEDCurrent )
 
 
-    
+    ProxThPin=machine.Pin(0, machine.Pin.IN ,machine.Pin.PULL_UP)
+    apds9960.disablePower()
+    apds9960.enablePower()
+    sleep_ms(50)
+
+    print("proximity:", apds9960.prox.readProximity )
+    #while True:
+    #    sleep_ms(50)
+    #
+    #    if(ProxThPin.value()==0):
+    #        print("proximity:", apds9960.prox.readProximity() )
+    #        apds9960.prox.clearInterrupt()  #one more time
+        
