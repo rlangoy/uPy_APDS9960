@@ -1,5 +1,6 @@
 """`APDS9960LITE`
 ====================================================
+
 Low memory Driver class for the APDS9960 
 
     Author: Rune Langøy  2019
@@ -52,6 +53,11 @@ class I2CEX:
     
 
 class PROX(I2CEX) :
+    """APDS9960 proximity functons   
+
+    :param i2c: The I2C driver
+    :type i2C: machine.i2c
+    """    
     def __init__(self,
                  i2c):
         super().__init__(i2c,0x39) # initiate I2CEX with APDS9960_ADDR
@@ -128,7 +134,7 @@ class PROX(I2CEX) :
     
 
 class APDS9960LITE(I2CEX) :
-    """APDS9960LITE low memory driver that provides proximity driver services for  ASDS9960 with Device ID:  0xa8 
+    """APDS9960LITE low memory driver for ASDS9960  
 
     :param i2c: The I2C driver
     :type i2C: machine.i2c
@@ -140,8 +146,8 @@ class APDS9960LITE(I2CEX) :
         from uPy_APDS9960.APDS9960LITE import APDS9960LITE
         
         i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))  # Creates I2C Driver on Pin 5 / 6
-        proxSensor=APDS9960LITE(i2c)                                # Create APDS9960 Driver
-        
+        adps9960=APDS9960LITE(i2c)                                  # Create APDS9960 Driver
+        #adps9960.prox  <- (PROX) Provides proximity functionalities
     """
     def __init__(self,
                 i2c):      
@@ -157,7 +163,9 @@ class APDS9960LITE(I2CEX) :
         super().__writeByte(0x80,0b00000001) # APDS9960_ENABLE PON=1
         self.prox=PROX(i2c)
         
-        
+    prox = None
+    """APDS9960 Proximity functions :class:`.PROX`"""
+
     def statusRegister(self):
             """
             Status Register (0x93)
