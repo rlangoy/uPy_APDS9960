@@ -24,6 +24,26 @@ class I2CEX:
                  address):
         self.__i2c=i2c
         self.__address=address
+    def __regWriteBit(self,reg,bitPos,bitVal)
+        """Writes a I2C byte to the address APDS9960_ADDR (0x39)
+
+            :param reg: The I2C register that is writen to
+            :type reg: int
+
+            :param bitPos: The bit position (0 - 7)
+            :type bitPos: int        
+            
+            :param value: True = set-bit / False =clear bit
+            :type value: bool        
+        """
+        val=this.__readByte(reg)   # read reg 
+        if bitVal == True:
+            val=val | (1<<bitPos)  # set bit
+        else:
+            val=val & ~(1<<bitPos) # clear bit
+        
+        super().__writeByte(reg,val) #write reg
+  
     
     def __writeByte(self,reg,val):
         """Writes a I2C byte to the address APDS9960_ADDR (0x39)

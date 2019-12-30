@@ -30,33 +30,84 @@ __version__ = "0.1.0-auto.0"
 __repo__ = "https://github.com/rlangoy/uPy_APDS9960.git"
 
 #pylint: enable-msg=bad-whitespace
-APDS9960_ADDR        = const(0x39)
+#APDS9960_ADDR        = const(0x39)
 
 # APDS9960 register addresses
-APDS9960_REG_ENABLE  = const(0x80)
-APDS9960_REG_PDATA   = const(0x9c)
-APDS9960_ID          = const(0x92)
-APDS9960_REG_PILT    = const(0x89)
-APDS9960_REG_PIHT    = const(0x8b)
-APDS9960_REG_CONTROL = const(0x8f)
+#APDS9960_REG_ENABLE  = const(0x80)
+#APDS9960_REG_PDATA   = const(0x9c)
+#APDS9960_ID          = const(0x92)
+#APDS9960_REG_PILT    = const(0x89)
+#APDS9960_REG_PIHT    = const(0x8b)
+#APDS9960_REG_CONTROL = const(0x8f)
 
 # Proximity Gain (PGAIN) values
-APDS9960_PGAIN_1X = const(0)
-APDS9960_PGAIN_2X = const(1)
-APDS9960_PGAIN_4X = const(2)
-APDS9960_PGAIN_8X = const(3)
+#APDS9960_PGAIN_1X = const(0)
+#APDS9960_PGAIN_2X = const(1)
+#APDS9960_PGAIN_4X = const(2)
+#APDS9960_PGAIN_8X = const(3)
 
 # LED Drive values
-APDS9960_LED_DRIVE_100MA = const(0)
-APDS9960_LED_DRIVE_50MA = const(1)
-APDS9960_LED_DRIVE_25MA = const(2)
-APDS9960_LED_DRIVE_12_5MA = const(3)
+#APDS9960_LED_DRIVE_100MA = const(0)
+#APDS9960_LED_DRIVE_50MA = const(1)
+#APDS9960_LED_DRIVE_25MA = const(2)
+#APDS9960_LED_DRIVE_12_5MA = const(3)
 
 # APDS9960 modes
-APDS9960_MODE_POWER = const(0)
-APDS9960_MODE_ALL   = const(7)
-APDS9960_MODE_PROXIMITY = const(2)
-APDS9960_MODE_PROXIMITY_INT = const(5)
+#APDS9960_MODE_POWER = const(0)
+#APDS9960_MODE_ALL   = const(7)
+#APDS9960_MODE_PROXIMITY = const(2)
+#APDS9960_MODE_PROXIMITY_INT = const(5)
+
+class I2CEX:
+    """micropython i2c adds functions for reading / writing byte to a register 
+
+    :param i2c: The I2C driver
+    :type i2C: machine.i2c
+    """
+
+    def __init__(self,
+                 i2c, 
+                 address):
+        self.__i2c=i2c
+        self.__address=address
+    
+    def __writeByte(self,reg,val):
+        """Writes a I2C byte to the address APDS9960_ADDR (0x39)
+
+            :param reg: The I2C register that is writen to
+            :type reg: int
+            :param val: The I2C value to write in the range (0- 255)
+            :type val: int        
+        """
+        self.__i2c.writeto_mem(self.__address,reg,bytes((val,)))
+
+    def __readByte(self,reg):
+        """Reads a I2C byte from the address APDS9960_ADDR (0x39)
+
+        :param reg: The I2C register to read
+        :type reg: int
+
+        :param val: The I2C value to write in the range (0- 255)
+        :type val: int 
+
+        :returns: a value in the range (0- 255)
+        :rtype: int      
+        """
+
+        val =self.__i2c.readfrom_mem(self.__address,reg, 1)
+        return int.from_bytes(val, 'big', True)
+    
+
+class PROX(I2CEX) :
+    """APDS9960 proximity functons   
+
+    :param i2c: The I2C driver
+    :type i2C: machine.i2c
+    """    
+    def __init__(self,
+                 i2c):
+        super().__init__(i2c,0x39) # initiate I2CEX with APDS9960_ADDR
+
 
 #pylint: disable-msg=too-many-instance-attributes
 class APDS9960 :
