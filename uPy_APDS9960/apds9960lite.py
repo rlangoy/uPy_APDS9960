@@ -247,6 +247,21 @@ class APDS9960LITE(I2CEX) :
     prox = None
     """APDS9960 Proximity functions :class:`.PROX`"""
 
+    def enablePower(self):
+        """Power on APDS-9960
+        """
+        #APDS9960_REG_ENABLE  = const(0x80)
+        PON=0
+        super().__regWriteBit(0x80,PON, True)
+
+
+    def disablePower(self):
+        """Power off APDS-9960
+        """
+        #APDS9960_REG_ENABLE  = const(0x80)
+        PON=0
+        super().__regWriteBit(0x80,PON, False)
+
     def statusRegister(self):
             """
             Status Register (0x93)
@@ -283,9 +298,11 @@ if __name__ == "__main__":
 
 
     ProxThPin=machine.Pin(0, machine.Pin.IN ,machine.Pin.PULL_UP)
-
+    apds9960.disablePower()
+    apds9960.enablePower()
     sleep_ms(50)
 
+    print("proximity:", apds9960.prox.readProximity() )
     #while True:
     #    sleep_ms(50)
     #
