@@ -38,7 +38,7 @@ Installation
 
 The steps above is descsribed in the `Thonny IDE tutorial`_.
 
-.. _Thonny IDE tutorial: docs/thonny_guide.rst
+.. _Thonny IDE tutorial: https://upy-apds9960.readthedocs.io/en/latest/thonny_guide.html
 
 
 
