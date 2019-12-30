@@ -20,8 +20,8 @@ Complete documentation is hosted on the "Read the Docs" page
 `upy-apds9960.readthedocs.io <https://upy-apds9960.readthedocs.io>`_
 
 
-Installation and Dependencies
-=============================
+Dependencies
+============
 This driver depends on:
 
 * `MicroPython <http://micropython.org/>`_
@@ -30,6 +30,13 @@ Tested on:
       | Sensor:   `GY-9960LLC <https://www.aliexpress.com/item/32738206621.html>`_
       | Devboard: Node MCU v1.0
       | Firmware: `esp8266-20191220-v1.12.bi <http://micropython.org/resources/firmware/esp8266-20191220-v1.12.bin>`_        
+
+Installation
+============
+* Flash the ESP8266 with MicroPython
+* Copy the folder uPy_APDS9960 and content (apds9960.py and apds9960lite.py) to the ESP8266 root folder
+
+The steps above is descsribed in the `Thonny IDE tutorial <docs/thonny_guide>` 
 
 Usage Example
 =============
