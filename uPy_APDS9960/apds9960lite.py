@@ -205,13 +205,14 @@ class PROX(I2CEX) :
 
         super().__writeByte(0x8f,val)
 
+    @property
     def readProximity(self):
-            """Reads the APDS9960 proximity level 
+        """Reads the APDS9960 proximity level
 
-            :returns: proximity as a value in the range (0- 255)
-            :rtype: int      
-            """               
-            return super().__readByte(0x9c)
+            :getter: Returns the proximity level (0 - 255 ) 
+            :type: int     
+        """        
+        return super().__readByte(0x9c)
     
 
 class APDS9960LITE(I2CEX) :
@@ -302,7 +303,7 @@ if __name__ == "__main__":
     apds9960.enablePower()
     sleep_ms(50)
 
-    print("proximity:", apds9960.prox.readProximity() )
+    print("proximity:", apds9960.prox.readProximity )
     #while True:
     #    sleep_ms(50)
     #
