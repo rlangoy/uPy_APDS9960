@@ -89,7 +89,7 @@ Of course, you must import the device and library :)
 .. code:: python
 
   import machine
-  from uPy_APDS9960.APDS9960 import APDS9960
+  from uPy_APDS9960.APDS9960LITE import APDS9960LITE
  
 
 To set-up the device to gather data, initialize the I2C-device using SCL and SDA pins. 
@@ -98,7 +98,8 @@ Then initialize the library.
 .. code:: python
 
   i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
-  proxSensor = APDS9960(i2c)
+  apds9960=APDS9960LITE(i2c)         # Enable sensor
+  apds9960.prox.enableProximity()    # Enable Proximit sensing
 
 
 Contributing
