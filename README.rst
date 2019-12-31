@@ -99,7 +99,7 @@ Then initialize the library.
 
   i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
   apds9960=APDS9960LITE(i2c)         # Enable sensor
-  apds9960.prox.enableProximity()    # Enable Proximit sensing
+  apds9960.prox.enableProximity()    # Enable Proximity sensing
 
 
 Contributing

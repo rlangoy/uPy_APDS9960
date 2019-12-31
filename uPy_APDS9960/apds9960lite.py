@@ -229,7 +229,6 @@ class APDS9960LITE(I2CEX) :
         
         i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))  # Creates I2C Driver on Pin 5 / 6
         adps9960=APDS9960LITE(i2c)                                  # Create APDS9960 Driver
-        #adps9960.prox  <- (PROX) Provides proximity functionalities
     """
     def __init__(self,
                 i2c):      
@@ -245,8 +244,18 @@ class APDS9960LITE(I2CEX) :
         super().__writeByte(0x80,0b00000001) # APDS9960_ENABLE PON=1
         self.prox=PROX(i2c)
         
-    prox = None
-    """APDS9960 Proximity functions :class:`.PROX`"""
+    prox = PROX
+    """Prvides APDS9960 Proximity functions.See class: :class:`.PROX`  
+
+    :type PROX: 
+
+    :example:
+      .. code:: python
+
+        apds9960=APDS9960LITE(i2c)         # Enable sensor
+        apds9960.prox.enableProximity()    # Enable Proximit sensing
+
+    """
 
     def enablePower(self):
         """Power on APDS-9960
