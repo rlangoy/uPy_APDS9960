@@ -71,7 +71,25 @@ class I2CEX:
 
         val =self.__i2c.readfrom_mem(self.__address,reg, 1)
         return int.from_bytes(val, 'big', True)
+class ALS(I2CEX):
+    """APDS9960 Digital Ambient Light Sense (ALS) and Color Sense (RGBC) functionalities 
     
+    :param i2c: The I2C driver
+    :type i2C: machine.i2c
+    """    
+    def __init__(self,
+                 i2c):
+        super().__init__(i2c,0x39) # initiate I2CEX with APDS9960_ADDR
+
+   def enableLightSensor(self,on=True):
+        """Enable/Disable the Light sensor
+
+        :param on: Enables / Disables the Light sensor
+                (Default True)
+        :type on: bool
+        """
+        AEN=1  #ALS enable bit 1 (AEN) in reg APDS9960_REG_ENABLE
+        super().__regWriteBit(reg=0x80,bitPos=PEN,bitVal=on)
 
 class PROX(I2CEX) :
     """APDS9960 proximity functons   
