@@ -81,7 +81,7 @@ class ALS(I2CEX):
                  i2c):
         super().__init__(i2c,0x39) # initiate I2CEX with APDS9960_ADDR
 
-   def enableLightSensor(self,on=True):
+    def enableLightSensor(self,on=True):
         """Enable/Disable the Light sensor
 
         :param on: Enables / Disables the Light sensor
@@ -89,7 +89,7 @@ class ALS(I2CEX):
         :type on: bool
         """
         AEN=1  #ALS enable bit 1 (AEN) in reg APDS9960_REG_ENABLE
-        super().__regWriteBit(reg=0x80,bitPos=PEN,bitVal=on)
+        super().__regWriteBit(reg=0x80,bitPos=AEN,bitVal=on)
 
 class PROX(I2CEX) :
     """APDS9960 proximity functons   
@@ -261,6 +261,7 @@ class APDS9960LITE(I2CEX) :
         sleep(.05)
         super().__writeByte(0x80,0b00000001) # APDS9960_ENABLE PON=1
         self.prox=PROX(i2c)
+        self.als=ALS(i2c)
         
     prox = PROX
     """Prvides APDS9960 Proximity functions.See class: :class:`.PROX`  
@@ -274,7 +275,11 @@ class APDS9960LITE(I2CEX) :
         apds9960.prox.enableProximity()    # Enable Proximit sensing
 
     """
+    als = ALS
+    """Prvides APDS9960 Light sensor functions.See class: :class:`.ALS`  
 
+    :type PROX: 
+    """
     def enablePower(self):
         """Power on APDS-9960
         """
