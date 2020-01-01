@@ -143,13 +143,38 @@ class ALS(I2CEX):
             :getter: Returns the ambient light level (0 - 1025 ) 
             :type: int     
         """
-        
         return super().__read2Byte(0x94) #returns CDATAL and CDATAH
 
+    @property
+    def redLightLevel(self):
+        """Reads the APDS9960 red light level (apds9960 red channel data)
+
+            :getter: Returns the red light level (0 - 1025 ) 
+            :type: int     
+        """ 
+        return super().__read2Byte(0x96) #returns RDATAL and RDATAH
+    
+    @property
+    def greenLightLevel(self):
+        """Reads the APDS9960 green light level (apds9960 green channel data)
+
+            :getter: Returns the green light level (0 - 1025 ) 
+            :type: int     
+        """       
+        return super().__read2Byte(0x98) #returns GDATAL and GDATAH
+    
+    @property
+    def blueLightLevel(self):
+        """Reads the APDS9960 blue light level (apds9960 blue channel data)
+
+            :getter: Returns the blue light level (0 - 1025 ) 
+            :type: int     
+        """       
+        return super().__read2Byte(0x9A) #returns BDATAL and BDATAH
      
 
-class PROX(I2CEX) :
-    """APDS9960 proximity functons   
+class PROX(I2CEX):
+    """APDS9960 proximity functons
 
     :param i2c: The I2C driver
     :type i2C: machine.i2c

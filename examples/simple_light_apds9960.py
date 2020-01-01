@@ -12,5 +12,8 @@ apds9960.als.enableLightSensor()   # Enable Light sensor
 apds9960.als.eLightGain=3          # x64 gain
 #apds9960.prox.enableProximity()
 sleep_ms(50)
-print("Light level: ", apds9960.als.ambientLightLevel)
+print("Clear Light level: ", apds9960.als.ambientLightLevel)
+print("Red   Light level: "  , apds9960.als.redLightLevel)
+print("Green Light level: ", apds9960.als.greenLightLevel)
+print("Blue  Light level: " , apds9960.als.blueLightLevel)
 
