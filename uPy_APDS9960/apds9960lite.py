@@ -62,15 +62,27 @@ class I2CEX:
         :param reg: The I2C register to read
         :type reg: int
 
-        :param val: The I2C value to write in the range (0- 255)
-        :type val: int 
-
         :returns: a value in the range (0- 255)
         :rtype: int      
         """
 
         val =self.__i2c.readfrom_mem(self.__address,reg, 1)
         return int.from_bytes(val, 'big', True)
+
+    def __read2Byte(self,reg):
+        """Reads a I2C byte from the address APDS9960_ADDR (0x39)
+
+        :param reg: The I2C register to read
+        :type reg: int
+
+        :returns: a value in the range (0- 65535)
+        :rtype: int      
+        """
+        val =self.__i2c.readfrom_mem(self.__address,reg, 2)
+        return int.from_bytes(val, 'little', True)
+   
+  
+    
 class ALS(I2CEX):
     """APDS9960 Digital Ambient Light Sense (ALS) and Color Sense (RGBC) functionalities 
     
@@ -90,6 +102,51 @@ class ALS(I2CEX):
         """
         AEN=1  #ALS enable bit 1 (AEN) in reg APDS9960_REG_ENABLE
         super().__regWriteBit(reg=0x80,bitPos=AEN,bitVal=on)
+
+    @property
+    def eLightGain(self):
+        """Sets the receiver gain for light measurements.
+
+        :getter: Returns the reciever gain (0 -3)
+        :setter: Sets the reciever gain (0 -3)
+        :type: int
+
+        ::
+
+            eGain    Gain
+              0       1x
+              1       2x
+              2       16x
+              3       64x
+        """
+        #APDS9960_REG_CONTROL = const(0x8f)
+        val=super().__readByte(0x8f)
+        val= val  & 0b00000011 
+        return val
+
+    @eLightGain.setter
+    def eLightGain(self, eGain):
+        #APDS9960_REG_CONTROL = const(0x8f)
+        val=super().__readByte(0x8f)
+        # set bits in register to given value
+        eGain &= 0b00000011
+        val &= 0b11111100
+        val |= eGain
+
+        super().__writeByte(0x8f,val)
+
+
+    @property
+    def ambientLightLevel(self):
+        """Reads the APDS9960 ambient light level (apds9960 clear channel data)
+
+            :getter: Returns the ambient light level (0 - 1025 ) 
+            :type: int     
+        """
+        
+        return super().__read2Byte(0x94) #returns CDATAL and CDATAH
+
+     
 
 class PROX(I2CEX) :
     """APDS9960 proximity functons   
@@ -263,7 +320,7 @@ class APDS9960LITE(I2CEX) :
         self.prox=PROX(i2c)
         self.als=ALS(i2c)
         
-    prox = PROX
+    prox = None
     """Prvides APDS9960 Proximity functions.See class: :class:`.PROX`  
 
     :type PROX: 
@@ -275,7 +332,7 @@ class APDS9960LITE(I2CEX) :
         apds9960.prox.enableProximity()    # Enable Proximit sensing
 
     """
-    als = ALS
+    als = None
     """Prvides APDS9960 Light sensor functions.See class: :class:`.ALS`  
 
     :type PROX: 
@@ -318,24 +375,29 @@ if __name__ == "__main__":
     from time import sleep_ms
         
     i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
-    print("Lite APDS-9960 Proximity test ")
+    print("Lite APDS-9960 Light (ALS) test ")
 
     apds9960=APDS9960LITE(i2c)
-    apds9960.prox.enableProximity()
-    apds9960.prox.setProximityInterruptThreshold(high=10,low=0,persistance=7)
-    apds9960.prox.enableProximityInterrupt()
-    apds9960.prox.eLEDCurrent=0     #0-> 100 mA (max)
-    apds9960.prox.eProximityGain=3  #3-> gain x8 (max)
-    print("eProximityGain", apds9960.prox.eProximityGain)
-    print("eLEDCurrent ",apds9960.prox.eLEDCurrent )
+#    apds9960.prox.enableProximity()
+#    apds9960.prox.setProximityInterruptThreshold(high=10,low=0,persistance=7)
+#    apds9960.prox.enableProximityInterrupt()
+#    apds9960.prox.eLEDCurrent=0     #0-> 100 mA (max)
+#    apds9960.prox.eProximityGain=3  #3-> gain x8 (max)
+#    print("eProximityGain", apds9960.prox.eProximityGain)
+#    print("eLEDCurrent ",apds9960.prox.eLEDCurrent )
+    print("Enable light sensor(ALS)")
+    apds9960.als.enableLightSensor()   # Enable Light sensor
+    
+    
 
-
-    ProxThPin=machine.Pin(0, machine.Pin.IN ,machine.Pin.PULL_UP)
-    apds9960.disablePower()
-    apds9960.enablePower()
+#    ProxThPin=machine.Pin(0, machine.Pin.IN ,machine.Pin.PULL_UP)
+#    apds9960.disablePower()
+#    apds9960.enablePower()
     sleep_ms(50)
 
-    print("proximity:", apds9960.prox.readProximity )
+#    print("proximity:", apds9960.prox.readProximity )
+    print("Ambient light:", apds9960.als.ambientLightLevel )
+ 
     #while True:
     #    sleep_ms(50)
     #
