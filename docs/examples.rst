@@ -64,3 +64,15 @@ Ambient Light IRQ test program.
     :caption: examples/als/simple_light_irq_apds9960.py
     :linenos:
 
+Debug
+=====
+
+I2C Debug Example 
+-----------------
+
+Test program for testing the I2C connection the the aps9960
+
+.. literalinclude:: ../examples/debug/i2c_test.py
+    :caption: examples/debug/i2c_test.py
+    :linenos:
+
