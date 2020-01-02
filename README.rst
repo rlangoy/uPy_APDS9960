@@ -104,7 +104,7 @@ Then initialize the library.
 
 Proximity
 ~~~~~~~~~
-Proximity funxtionalites is accessed torough the apds9960.prox member class :class:`.PROX`
+Proximity funxtionalites is accessed torough the apds9960.prox member :class:`.PROX`
 
 .. code:: python
 
@@ -114,7 +114,7 @@ Proximity funxtionalites is accessed torough the apds9960.prox member class :cla
 
 Light Sensing
 ~~~~~~~~~~~~~
-Proximity funxtionalites is accessed torough the apds9960.als member class :class:`.ALS`
+Proximity funxtionalites is accessed torough the apds9960.als member :class:`.ALS`
 
 .. code:: python
 
