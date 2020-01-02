@@ -1,12 +1,12 @@
-Examples 
-========
+Proximity &  Light Sensing
+==========================
 
 Proximity Examples 
 ------------------
 
 Examples that demostrates the use of apds9960 as a proximity sensor
 
-Simple example
+Simple Example
 ~~~~~~~~~~~~~~
 
 Basic proximity test program.
@@ -16,8 +16,8 @@ Basic proximity test program.
     :caption: examples/prox/simple_proximity_apds9960.py
     :linenos:
 
-Example 
-~~~~~~~
+Regular Example 
+~~~~~~~~~~~~~~~
 
 Example exposing more functions 
 
@@ -42,7 +42,7 @@ Example showing use of interrupts exposing more functionalities
 	:caption: examples/prox/irq_proximity_apds9960.py
 	:linenos:
 
-Light sensor examples 
+Light Sensor Examples 
 ---------------------
 
 
