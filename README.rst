@@ -157,7 +157,7 @@ If successful the output should be:
   Found ADPS9960: Device ID:  b'\xa8'
 
 
-Be aware if the output shows: ::
+.. note:: Be aware if the output shows: ::
 
    "many i2c devices was listed"  check if the i2c pins are allocated correctly
    "No i2c device"                check if the power is correctly connected
