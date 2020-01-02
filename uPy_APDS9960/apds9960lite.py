@@ -62,19 +62,175 @@ class I2CEX:
         :param reg: The I2C register to read
         :type reg: int
 
-        :param val: The I2C value to write in the range (0- 255)
-        :type val: int 
-
         :returns: a value in the range (0- 255)
         :rtype: int      
         """
 
         val =self.__i2c.readfrom_mem(self.__address,reg, 1)
         return int.from_bytes(val, 'big', True)
-    
 
-class PROX(I2CEX) :
-    """APDS9960 proximity functons   
+    def __write2Byte(self,reg,val):
+        """Writes a I2C byte to the address APDS9960_ADDR (0x39)
+
+            :param reg: The I2C register that is writen to
+            :type reg: int
+            :param val: The I2C value to write in the range (0- 255)
+            :type val: int        
+        """
+        b = bytearray(2)
+        b[0]=val & 0xff
+        b[1]=(val>>8) & 0xff
+        self.__i2c.writeto_mem(self.__address,reg,b)
+
+    def __read2Byte(self,reg):
+        """Reads a I2C byte from the address APDS9960_ADDR (0x39)
+
+        :param reg: The I2C register to read
+        :type reg: int
+
+        :returns: a value in the range (0- 65535)
+        :rtype: int      
+        """
+        val =self.__i2c.readfrom_mem(self.__address,reg, 2)
+        return int.from_bytes(val, 'little', True)
+   
+  
+    
+class ALS(I2CEX):
+    """APDS9960 Digital Ambient Light Sense (ALS) and Color Sense (RGBC) functionalities 
+    
+    :param i2c: The I2C driver
+    :type i2C: machine.i2c
+    """    
+    def __init__(self,
+                 i2c):
+        super().__init__(i2c,0x39) # initiate I2CEX with APDS9960_ADDR
+
+    def enableLightSensor(self,on=True):
+        """Enable/Disable the Light sensor
+
+        :param on: Enables / Disables the Light sensor
+                (Default True)
+        :type on: bool
+        """
+        AEN=1  #ALS enable bit 1 (AEN) in reg APDS9960_REG_ENABLE
+        super().__regWriteBit(reg=0x80,bitPos=AEN,bitVal=on)
+
+    @property
+    def eLightGain(self):
+        """Sets the receiver gain for light measurements.
+
+        :getter: Returns the reciever gain (0 -3)
+        :setter: Sets the reciever gain (0 -3)
+        :type: int
+
+        ::
+
+            eGain    Gain
+              0       1x
+              1       2x
+              2       16x
+              3       64x
+        """
+        #APDS9960_REG_CONTROL = const(0x8f)
+        val=super().__readByte(0x8f)
+        val= val  & 0b00000011 
+        return val
+
+    @eLightGain.setter
+    def eLightGain(self, eGain):
+        #APDS9960_REG_CONTROL = const(0x8f)
+        val=super().__readByte(0x8f)
+        # set bits in register to given value
+        eGain &= 0b00000011
+        val &= 0b11111100
+        val |= eGain
+
+        super().__writeByte(0x8f,val)
+
+
+    @property
+    def ambientLightLevel(self):
+        """Reads the APDS9960 ambient light level (apds9960 clear channel data)
+
+            :getter: Returns the ambient light level (0 - 1025 ) 
+            :type: int     
+        """
+        return super().__read2Byte(0x94) #returns CDATAL and CDATAH
+
+    @property
+    def redLightLevel(self):
+        """Reads the APDS9960 red light level (apds9960 red channel data)
+
+            :getter: Returns the red light level (0 - 1025 ) 
+            :type: int     
+        """ 
+        return super().__read2Byte(0x96) #returns RDATAL and RDATAH
+    
+    @property
+    def greenLightLevel(self):
+        """Reads the APDS9960 green light level (apds9960 green channel data)
+
+            :getter: Returns the green light level (0 - 1025 ) 
+            :type: int     
+        """       
+        return super().__read2Byte(0x98) #returns GDATAL and GDATAH
+    
+    @property
+    def blueLightLevel(self):
+        """Reads the APDS9960 blue light level (apds9960 blue channel data)
+
+            :getter: Returns the blue light level (0 - 1025 ) 
+            :type: int     
+        """       
+        return super().__read2Byte(0x9A) #returns BDATAL and BDATAH
+
+    def setLightInterruptThreshold(self,high=0,low=20,persistance=4):
+        """Enable/Disable the proimity sensor
+
+        :param high: high level for generating light hardware interrupt (Range 0 - 1025)
+        :type high: int 
+
+        :param low: low level for generating light hardware interrupt (Range 0 - 1025)
+        :type low: int 
+
+        :param persistance: Number of consecutive reads before IRQ is raised (Range 0 - 7)
+        :type persistance: int 
+
+        """
+        #ALS low threshold, lower byte
+        super().__write2Byte(0x84, low);  #set ALS low threshold
+        super().__write2Byte(0x86, high); #set ALS low threshold 
+ 
+ 
+        if (persistance>7) :
+            persistance=7
+
+        val=super().__readByte(0x8C) #APDS9960_PERS 0x8C<3:0>  Proximity Interrupt Persistence 
+        val=val & 0b11111000          # Clear APERS
+        val=val | persistance         # Set   APERS
+        super().__writeByte(0x8C,val) # Update APDS9960_PERS
+
+    def clearInterrupt(self):
+        """Crears the proimity interrupt
+        IRQ HW output goes low (enables triggering of new IRQ)
+        """
+        super().__readByte(0xe6)    #All Non-Gesture Interrupt Clear
+
+    def enableInterrupt(self,on=True):
+        """Enables/Disables IRQ dependent on limits given by setLightInterruptThreshold()
+
+        :param on: Enable / Disable Hardware IRQ  
+        :type on: bool 
+        """
+        #ENABLE<AIEN> 0x80<4> ALS Interrupt Enable
+        AIEN=4    #ALS Interrupt Enable bit 4 (AIEN) in reg APDS9960_REG_ENABLE
+        super().__regWriteBit(reg=0x80,bitPos=AIEN,bitVal=on)
+        self.clearInterrupt(); 
+
+
+class PROX(I2CEX):
+    """APDS9960 proximity functons
 
     :param i2c: The I2C driver
     :type i2C: machine.i2c
@@ -243,8 +399,9 @@ class APDS9960LITE(I2CEX) :
         sleep(.05)
         super().__writeByte(0x80,0b00000001) # APDS9960_ENABLE PON=1
         self.prox=PROX(i2c)
+        self.als=ALS(i2c)
         
-    prox = PROX
+    prox = None
     """Prvides APDS9960 Proximity functions.See class: :class:`.PROX`  
 
     :type PROX: 
@@ -256,7 +413,11 @@ class APDS9960LITE(I2CEX) :
         apds9960.prox.enableProximity()    # Enable Proximit sensing
 
     """
+    als = None
+    """Prvides APDS9960 Light sensor functions.See class: :class:`.ALS`  
 
+    :type PROX: 
+    """
     def enablePower(self):
         """Power on APDS-9960
         """
@@ -289,34 +450,3 @@ class APDS9960LITE(I2CEX) :
             :rtype: int      
             """
             return super().__readByte(0x93)
-if __name__ == "__main__":
-
-    import machine
-    from time import sleep_ms
-        
-    i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
-    print("Lite APDS-9960 Proximity test ")
-
-    apds9960=APDS9960LITE(i2c)
-    apds9960.prox.enableProximity()
-    apds9960.prox.setProximityInterruptThreshold(high=10,low=0,persistance=7)
-    apds9960.prox.enableProximityInterrupt()
-    apds9960.prox.eLEDCurrent=0     #0-> 100 mA (max)
-    apds9960.prox.eProximityGain=3  #3-> gain x8 (max)
-    print("eProximityGain", apds9960.prox.eProximityGain)
-    print("eLEDCurrent ",apds9960.prox.eLEDCurrent )
-
-
-    ProxThPin=machine.Pin(0, machine.Pin.IN ,machine.Pin.PULL_UP)
-    apds9960.disablePower()
-    apds9960.enablePower()
-    sleep_ms(50)
-
-    print("proximity:", apds9960.prox.readProximity )
-    #while True:
-    #    sleep_ms(50)
-    #
-    #    if(ProxThPin.value()==0):
-    #        print("proximity:", apds9960.prox.readProximity() )
-    #        apds9960.prox.clearInterrupt()  #one more time
-        
