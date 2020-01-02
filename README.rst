@@ -123,6 +123,47 @@ Proximity funxtionalites is accessed torough the apds9960.als member :class:`.AL
   print(apds9960.als.ambientLightLevel) # Print the ambient light value
 
 
+Debug
+-----
+If things does not work try to run the script below to verify that it i2c communication with the apds9960 is working as expected
+
+.. code:: python
+
+  import machine
+  i2c = machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
+   
+  print('Scan i2c bus...')
+  devices = i2c.scan()
+
+  if len(devices) == 0:
+    print("No i2c device !")
+  else:
+    print('i2c devices found:',len(devices))
+
+    for device in devices:
+      print("Decimal address: ",device," | Hexa address: ",hex(device))
+          
+      if(device==0x39): # APDS9960 Address = 0x39
+          deviceID=i2c.readfrom_mem(devices[0],0x92, 1) #G et deviceID
+          print("Found ADPS9960: Device ID: ",deviceID)
+
+If successful the output should be:
+
+.. code-block:: shell
+
+  Scan i2c bus...
+  i2c devices found: 1
+  Decimal address:  57  | Hexa address:  0x39
+  Found ADPS9960: Device ID:  b'\xa8'
+
+
+Be aware if the output shows: ::
+
+   "many i2c devices was listed"  check if the i2c pins are allocated correctly
+   "No i2c device"                check if the power is correctly connected
+  
+The Device id can be 0xa8, 0xab 0x9c or 0x55.)
+
 Sphinx documentation
 ====================
 
