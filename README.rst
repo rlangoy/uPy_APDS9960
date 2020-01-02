@@ -1,17 +1,18 @@
-Introduction 
-============
+MicroPython APDS-9960 RAM optimized Library
+===========================================
 
 .. image:: https://readthedocs.org/projects/upy-apds9960/badge/?version=latest
     :target: https://upy-apds9960.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
 |
-.. raw:: html
-
+.. raw:: html 
+    
     <img src="https://github.com/rlangoy/uPy_APDS9960/raw/master/docs/images/breakoutboard.jpg">
 
-| This a APDS9960/GY-9960LLC micropython library for proximity detection. 
-| Tested on ESP8266EX / ESP12-E ( NodeMCU DEVKIT 1.0) 
+Another APDS9960 / GY-9960LLC micro python library optimized for ESP8266 / ESP12-E for:
+    * Light Sensing  (Ambient Light and RGB Color Sensing)
+    * Proximity Sensing
 
 
 Documentation 
@@ -99,8 +100,46 @@ Then initialize the library.
 
   i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
   apds9960=APDS9960LITE(i2c)         # Enable sensor
-  apds9960.prox.enableProximity()    # Enable Proximity sensing
+  
 
+Proximity
+~~~~~~~~~
+Proximity funxtionalites is accessed torough the apds9960.prox member class :class:`.PROX`
+
+.. code:: python
+
+  apds9960.prox.enableProximity()     # Enable Proximity sensing
+  sleep_ms(25)                        # wait for readout to be ready
+  print(apds9960.prox.readProximity)  # Print the proximity value
+
+Light Sensing
+~~~~~~~~~~~~~
+Proximity funxtionalites is accessed torough the apds9960.als member class :class:`.ALS`
+
+.. code:: python
+
+  apds9960.als.enableLightSensor()      # Enable Light sensor
+  sleep_ms(25)                          # Wait for readout to be ready
+  print(apds9960.als.ambientLightLevel) # Print the ambient light value
+
+
+Sphinx documentation
+====================
+
+`Sphinx the Python Documentation Generator <http://www.sphinx-doc.org/>`_ is used for this documentation, if you like to build a local copy of the documentation install Sphinx :
+
+.. code-block:: shell
+
+    python -m pip install sphinx
+
+Ceate html doc by
+
+.. code-block:: shell
+
+    cd docs
+    make html
+
+The html pages would be located at : docs/_build/html 
 
 Contributing
 ============
