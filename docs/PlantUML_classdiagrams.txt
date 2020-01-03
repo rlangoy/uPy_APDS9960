@@ -16,7 +16,7 @@ class ALS {
 class PROX {
     eProximityGain
     eLEDCurrent
-    readProximity
+    proximityLevel
     __init__()
     enableSensor()
     setInterruptThreshold()
