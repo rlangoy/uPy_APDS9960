@@ -5,6 +5,9 @@ import sys
     
 sys.path.insert(0, os.path.abspath('..'))
 
+#def setup(app):
+#    app.add_css_file('custom.css')
+
 # -- General configuration ------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -101,6 +104,10 @@ else:
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+html_theme = 'msmb_theme'
+html_css_files = [
+    'css/custom.css',
+]
 
 # The name of an image file (relative to this directory) to use as a favicon of
 # the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
