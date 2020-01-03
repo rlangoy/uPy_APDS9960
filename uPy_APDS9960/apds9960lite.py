@@ -395,9 +395,9 @@ class APDS9960LITE(I2CEX) :
         """
         super().__init__(i2c,0x39) # initiate I2CEX with APDS9960_ADDR
 
-        super().powerOn(False) # APDS9960_ENABLE PON=0
+        self.powerOn(False) # APDS9960_ENABLE PON=0
         sleep(.05)
-        super().powerOn(True) # APDS9960_ENABLE PON=1
+        self.powerOn(True) # APDS9960_ENABLE PON=1
         self.prox=PROX(i2c)
         self.als=ALS(i2c)
         
@@ -425,7 +425,7 @@ class APDS9960LITE(I2CEX) :
                 (Default True)
         :type on: bool
         """
-         # PEN - bit 2
+
         PON=0
         super().__regWriteBit(reg=0x80,bitPos=PON,bitVal=on)
 
