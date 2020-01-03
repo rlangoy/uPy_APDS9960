@@ -21,9 +21,9 @@ apds9960=APDS9960LITE(i2c)
 apds9960.prox.eLEDCurrent   =APDS9960_LED_DRIVE_100MA    
 apds9960.prox.eProximityGain=APDS9960_PGAIN_8X   
 
-apds9960.prox.enableProximity()
-apds9960.prox.setProximityInterruptThreshold(high=10,low=0,persistance=7)
-apds9960.prox.enableProximityInterrupt()
+apds9960.prox.enableSensor()
+apds9960.prox.setInterruptThreshold(high=10,low=0,persistance=7)
+apds9960.prox.enableInterrupt()
 
 ProxThPin=machine.Pin(0, machine.Pin.IN ,machine.Pin.PULL_UP)
 
@@ -33,5 +33,5 @@ while True:
     sleep_ms(50)
 
     if(ProxThPin.value()==0):
-        print("proximity:", apds9960.prox.readProximity )
+        print("proximity:", apds9960.prox.proximityLevel )
         apds9960.prox.clearInterrupt()  

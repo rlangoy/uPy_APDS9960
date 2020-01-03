@@ -6,8 +6,8 @@ class ALS {
     greenLightLevel
     blueLightLevel
     __init__()
-    enableLightSensor()
-    setLightInterruptThreshold()
+    enableSensor()
+    setInterruptThreshold()
     clearInterrupt()
     enableInterrupt()
 }
@@ -18,10 +18,10 @@ class PROX {
     eLEDCurrent
     readProximity
     __init__()
-    enableProximity()
-    setProximityInterruptThreshold()
+    enableSensor()
+    setInterruptThreshold()
     clearInterrupt()
-    enableProximityInterrupt()
+    enableInterrupt()
 }
 
 
@@ -30,8 +30,7 @@ class APDS9960LITE {
     prox
     als
     __init__()
-    enablePower()
-    disablePower()
+    powerOn()
     statusRegister()
 }
 

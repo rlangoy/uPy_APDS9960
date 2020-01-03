@@ -106,7 +106,7 @@ class ALS(I2CEX):
                  i2c):
         super().__init__(i2c,0x39) # initiate I2CEX with APDS9960_ADDR
 
-    def enableLightSensor(self,on=True):
+    def enableSensor(self,on=True):
         """Enable/Disable the Light sensor
 
         :param on: Enables / Disables the Light sensor
@@ -185,7 +185,7 @@ class ALS(I2CEX):
         """       
         return super().__read2Byte(0x9A) #returns BDATAL and BDATAH
 
-    def setLightInterruptThreshold(self,high=0,low=20,persistance=4):
+    def setInterruptThreshold(self,high=0,low=20,persistance=4):
         """Enable/Disable the proimity sensor
 
         :param high: high level for generating light hardware interrupt (Range 0 - 1025)
@@ -239,7 +239,7 @@ class PROX(I2CEX):
                  i2c):
         super().__init__(i2c,0x39) # initiate I2CEX with APDS9960_ADDR
         
-    def enableProximity(self,on=True):
+    def enableSensor(self,on=True):
         """Enable/Disable the proimity sensor
 
         :param on: Enables / Disables the proximity sensor
@@ -250,7 +250,7 @@ class PROX(I2CEX):
         PEN=2  #Proximity enable bit 2 (PEN) in reg APDS9960_REG_ENABLE
         super().__regWriteBit(reg=0x80,bitPos=PEN,bitVal=on)
 
-    def setProximityInterruptThreshold(self,high=0,low=20,persistance=4):
+    def setInterruptThreshold(self,high=0,low=20,persistance=4):
         """Enable/Disable the proimity sensor
 
         :param high: high level for generating proximity hardware interrupt (Range 0 - 255)
@@ -281,7 +281,7 @@ class PROX(I2CEX):
         super().__writeByte(0xE7,0) #  APDS9960_AICLEAR clear all interrupts
         super().__readByte(0xE5)#(APDS9960_PICLEAR)
      
-    def enableProximityInterrupt(self,on=True):
+    def enableInterrupt(self,on=True):
         """Enables/Disables IRQ dependent on limits given by setProximityInterruptThreshold()
 
         :param on: Enable / Disable Hardware IRQ  
@@ -299,13 +299,13 @@ class PROX(I2CEX):
         :setter: Sets the reciever gain (0 -3)
         :type: int
 
-        ::
+            ::
 
-            eGain    Gain
-              0       1x
-              1       2x
-              2       4x
-              3       8x
+                eGain    Gain
+                  0       1x
+                  1       2x
+                  2       4x
+                  3       8x
         """
         #APDS9960_REG_CONTROL = const(0x8f)
         val=super().__readByte(0x8f)
@@ -334,13 +334,13 @@ class PROX(I2CEX):
         :setter: Sets the LED current(0 -3)
         :type: int
 
-        ::
+            ::
 
-          eCurent  LED Current
-            0        100 mA
-            1         50 mA
-            2         25 mA
-            3         12.5 mA
+              eCurent  LED Current
+                0        100 mA
+                1         50 mA
+                2         25 mA
+                3         12.5 mA
         """
         #APDS9960_REG_CONTROL = const(0x8f)
         val=super().__readByte(0x8f)
@@ -362,7 +362,7 @@ class PROX(I2CEX):
         super().__writeByte(0x8f,val)
 
     @property
-    def readProximity(self):
+    def proximityLevel(self):
         """Reads the APDS9960 proximity level
 
             :getter: Returns the proximity level (0 - 255 ) 
@@ -395,9 +395,9 @@ class APDS9960LITE(I2CEX) :
         """
         super().__init__(i2c,0x39) # initiate I2CEX with APDS9960_ADDR
 
-        super().__writeByte(0x80,0) # APDS9960_ENABLE PON=0
+        super().powerOn(False) # APDS9960_ENABLE PON=0
         sleep(.05)
-        super().__writeByte(0x80,0b00000001) # APDS9960_ENABLE PON=1
+        super().powerOn(True) # APDS9960_ENABLE PON=1
         self.prox=PROX(i2c)
         self.als=ALS(i2c)
         
@@ -418,35 +418,40 @@ class APDS9960LITE(I2CEX) :
 
     :type PROX: 
     """
-    def enablePower(self):
-        """Power on APDS-9960
+    def powerOn(self,on=True):
+        """Enable/Disable the apds9960 sensor
+
+        :param on: Enables / Disables the proximity sensor
+                (Default True)
+        :type on: bool
         """
-        #APDS9960_REG_ENABLE  = const(0x80)
+         # PEN - bit 2
         PON=0
-        super().__regWriteBit(0x80,PON, True)
+        super().__regWriteBit(reg=0x80,bitPos=PON,bitVal=on)
 
 
-    def disablePower(self):
-        """Power off APDS-9960
-        """
-        #APDS9960_REG_ENABLE  = const(0x80)
-        PON=0
-        super().__regWriteBit(0x80,PON, False)
-
+    @property
     def statusRegister(self):
             """
             Status Register (0x93)
             The read-only Status Register provides the status of the device. The register is set to 0x04 at power-up.
             Returns the device status.
 
-            :returns: Status register content 
-
-            ::
-
-              PGSAT - bit6 - Proximity Saturation
-              PINT  - bit5 - Proximity Interrupt
-              PVALID- bit1 - Proximity Valid 
-
+            :getter: Status register content byte 
+  
+                ====== ===== =============================
+                Field  Bits  Description
+                ====== ===== =============================
+                CPSAT     7  Clear Photodiode Saturation. 
+                PGSAT     6  Analog saturation event.
+                PINT      5  Proximity Interrupt. 
+                AINT      4  ALS Interrupt. 
+                DNC       3  Do not care.
+                GINT      2  Gesture Interrupt. 
+                PVALID    1  Proximity Valid. 
+                AVALID    0  ALS Valid. 
+                ====== ===== =============================
+ 
             :rtype: int      
             """
             return super().__readByte(0x93)
