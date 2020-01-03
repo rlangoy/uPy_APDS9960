@@ -2,7 +2,7 @@
 
 import os
 import sys
-print(sys.version)
+    
 sys.path.insert(0, os.path.abspath('..'))
 
 # -- General configuration ------------------------------------------------
@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.abspath('..'))
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
-    'sphinx.ext.viewcode'
+    'sphinx.ext.viewcode',
 ]
 
 # Mock out micropython ourselves so that we can make const a lambda.
@@ -70,7 +70,7 @@ default_role = "any"
 add_function_parentheses = True
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'colorful'  #'sphinx'
+pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
@@ -80,10 +80,23 @@ todo_emit_warnings = True
 
 
 # -- Options for HTML output ----------------------------------------------
- 
+
+# The theme to use for HTML and HTML Help pages.  See the documentation for
+# a list of builtin themes.
+#
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-html_theme_path = ['.'] 
-html_theme = 'bizstyle'#'bizstyle'
+
+if not on_rtd:  # only import and set the theme if we're building docs locally
+    try:
+        import sphinx_rtd_theme
+        html_theme = 'sphinx_rtd_theme'
+        html_theme_path = [sphinx_rtd_theme.get_html_theme_path(), '.']
+    except:
+        html_theme = 'default'
+        html_theme_path = ['.']
+else:
+    html_theme_path = ['.']
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
