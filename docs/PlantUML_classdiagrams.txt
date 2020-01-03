@@ -1,0 +1,55 @@
+@startuml
+class ALS {
+    eLightGain
+    ambientLightLevel
+    redLightLevel
+    greenLightLevel
+    blueLightLevel
+    __init__()
+    enableLightSensor()
+    setLightInterruptThreshold()
+    clearInterrupt()
+    enableInterrupt()
+}
+
+
+class PROX {
+    eProximityGain
+    eLEDCurrent
+    readProximity
+    __init__()
+    enableProximity()
+    setProximityInterruptThreshold()
+    clearInterrupt()
+    enableProximityInterrupt()
+}
+
+
+
+class APDS9960LITE {
+    prox
+    als
+    __init__()
+    enablePower()
+    disablePower()
+    statusRegister()
+}
+
+
+APDS9960LITE *--> PROX : prox
+APDS9960LITE *--> ALS : als
+class apds9960lite <<module>> << (M,orchid) >> #DarkSeaGreen {
+    ---
+}
+
+apds9960lite .. ALS : contains >
+apds9960lite .. PROX : contains >
+apds9960lite .. APDS9960LITE : contains >
+
+
+'Literate Code Map macros
+
+!function method($name, $params="")
+.. def <u><b>$name</b></u>($params) ..
+!endfunction
+@enduml
