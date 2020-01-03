@@ -36,7 +36,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'uPy_APDS9960 Library'
-copyright = u'2019 Rune Langøy'
+copyright = u'2020 Rune Langøy'
 author = u'Rune Langøy'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -86,17 +86,20 @@ todo_emit_warnings = True
 #
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
-if not on_rtd:  # only import and set the theme if we're building docs locally
-    try:
-        import sphinx_rtd_theme
-        html_theme = 'bizstyle'
-        html_theme_path = [sphinx_rtd_theme.get_html_theme_path(), '.']
-    except:
-        html_theme = 'bizstyle'
-        html_theme_path = ['.']
-else:
-    html_theme_path = ['.']
+#
+#if not on_rtd:  # only import and set the theme if we're building docs locally
+#    try:
+#        import sphinx_rtd_theme
+#        html_theme = 'bizstyle'
+#        html_theme_path = [sphinx_rtd_theme.get_html_theme_path(), '.']
+#    except:
+#        html_theme = 'bizstyle'
+#        html_theme_path = ['.']
+#else:
+#    html_theme_path = ['.']
 
+ 
+html_theme = 'bizstyle'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
