@@ -70,7 +70,7 @@ default_role = "any"
 add_function_parentheses = True
 
 # The name of the Pygments (syntax highlighting) style to use.
-#pygments_style = 'sphinx'
+pygments_style = 'colorful'  #'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
@@ -81,7 +81,9 @@ todo_emit_warnings = True
 
 # -- Options for HTML output ----------------------------------------------
  
-html_theme = 'nature'#'bizstyle'
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+html_theme_path = ['.'] 
+html_theme = 'bizstyle'#'bizstyle'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
