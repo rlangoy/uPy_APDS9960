@@ -27,11 +27,11 @@ class PROX {
 
 
 class APDS9960LITE {
-    prox
     als
+    prox
+    statusRegister
     __init__()
     powerOn()
-    statusRegister()
 }
 
 
