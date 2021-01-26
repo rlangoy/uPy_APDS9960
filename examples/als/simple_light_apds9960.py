@@ -1,6 +1,6 @@
 import machine
 from time import sleep_ms
-from uPy_APDS9960.APDS9960LITE import APDS9960LITE
+from uPy_APDS9960.apdsS9960LITE import APDS9960LITE
 
 #Init I2C Buss
 i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
