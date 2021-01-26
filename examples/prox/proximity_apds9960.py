@@ -1,6 +1,6 @@
 import machine
 from time import sleep_ms
-from uPy_APDS9960.APDS9960LITE import APDS9960LITE
+from uPy_APDS9960.apds9960LITE import APDS9960LITE
 
 # Proximity Gain (PGAIN) values
 APDS9960_PGAIN_1X = const(0)
