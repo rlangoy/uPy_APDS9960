@@ -90,7 +90,7 @@ Of course, you must import the device and library :)
 .. code:: python
 
   import machine
-  from uPy_APDS9960.APDS9960LITE import APDS9960LITE
+  from uPy_APDS9960.apds9960LITE import APDS9960LITE
  
 
 To set-up the device to gather data, initialize the I2C-device using SCL and SDA pins. 
