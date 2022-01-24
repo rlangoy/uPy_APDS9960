@@ -66,21 +66,21 @@ Usage Example
 Hardware Set-up
 ---------------
 
-Connect Vin to 3.3 V or 5 V power source, GND to ground, SCL and SDA to the appropriate pins to the NooeMCU Devboard
+Connect Vin to 3.3 V or 5 V power source, GND to ground, SCL and SDA to the appropriate pins to the Raspberry PI Pico
 
 ========== ====== ============ ======== ==============
-APDS9960   Name   Remarks      NodeMcu  Pin  Function  
+APDS9960   Name   Remarks      RPI PICO  Function  
 ========== ====== ============ ======== ==============
-1           VIN    +3.3V Power  3V3      +3.3V Power           
+1           VIN    +3.3V Power  36       3V3 
 2           GND    Ground       GND      GND           
-3           SCL    I2C clock    D1       GPIO 5 (SCL)   
-4           SDA    I2C Data     D2       GPIO 4 (SDA)   
-5           INT    Interrupt    D3       GPIO 0   
+3           SCL    I2C clock    22       GP17 (SCL)   
+4           SDA    I2C Data     21       GP16 (SDA)   
+5           INT    Interrupt    26       GP20    
 ========== ====== ============ ======== ==============
 
 .. raw:: html
 
-    <img src="https://github.com/rlangoy/uPy_APDS9960/raw/master/docs/images//APDS9960hookup.PNG">
+    <img src="https://github.com/rlangoy/uPy_APDS9960/raw/master/docs/images//PicoHookup.PNG">
 
 Basics
 ------
@@ -97,8 +97,8 @@ To set-up the device to gather data, initialize the I2C-device using SCL and SDA
 Then initialize the library.  
 
 .. code:: python
-
-  i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
+  
+  i2c =  machine.I2C(0,scl=machine.Pin(17), sda=machine.Pin(16))
   apds9960=APDS9960LITE(i2c)         # Poweron APDS9960
   
 
@@ -130,7 +130,7 @@ If things does not work try to run the script below to verify that it i2c commun
 .. code:: python
 
   import machine
-  i2c = machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
+  i2c =  machine.I2C(0,scl=machine.Pin(17), sda=machine.Pin(16))
    
   print('Scan i2c bus...')
   devices = i2c.scan()
