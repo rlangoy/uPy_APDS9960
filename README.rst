@@ -46,6 +46,7 @@ Examples
 The examples in theis respository uses the NodeMCU devboard the devboard to use rpi pico please change the I2C inferface as show in the code below
 
 .. code-block:: python
+
   #Change I2C interface from: 
   # i2c =  machine.I2C(0,scl=machine.Pin(17), sda=machine.Pin(16))
   # to
