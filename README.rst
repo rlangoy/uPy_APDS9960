@@ -90,6 +90,7 @@ Of course, you must import the device and library :)
 .. code:: python
 
   import machine
+  import time
   from uPy_APDS9960.apds9960LITE import APDS9960LITE
  
 
