@@ -52,8 +52,9 @@ The examples in theis respository uses the NodeMCU devboard the devboard to use 
   #to:
   i2c =  machine.I2C(0,scl=machine.Pin(17), sda=machine.Pin(16))
 
-The `NodeMCU Hookup is found here`_.
-.. _NodeMCU Hookup : ./node_mcu_example.rst
+Here is the `NodeMCU Hookup`_.
+
+.. _NodeMCU Hookup: ./node_mcu_example.rst
 
 Usage Example
 =============
