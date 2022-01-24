@@ -41,7 +41,16 @@ The steps above is descsribed in the `Thonny IDE tutorial`_.
 
 .. _Thonny IDE tutorial: https://upy-apds9960.readthedocs.io/en/latest/thonny_guide.html
 
+Examples
+========
+The examples in theis respository uses the NodeMCU devboard the devboard to use rpi pico please change the I2C inferface as show in the code below
+... code-block:: python
+  #Change I2C interface from: 
+  # i2c =  machine.I2C(0,scl=machine.Pin(17), sda=machine.Pin(16))
+  # to
+  i2c =  machine.I2C(0,scl=machine.Pin(17), sda=machine.Pin(16))
 
+.. _NodeMCU Hookup : ./node_mcu_example.rst
 
 Usage Example
 =============
