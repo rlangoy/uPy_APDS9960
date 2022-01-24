@@ -48,8 +48,8 @@ The examples in theis respository uses the NodeMCU devboard the devboard to use 
 .. code-block:: python
 
   #Change I2C interface from: 
-  # i2c =  machine.I2C(0,scl=machine.Pin(17), sda=machine.Pin(16))
-  # to
+  #  i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
+  #to:
   i2c =  machine.I2C(0,scl=machine.Pin(17), sda=machine.Pin(16))
 
 .. _NodeMCU Hookup : ./node_mcu_example.rst
@@ -64,7 +64,7 @@ Usage Example
   from uPy_APDS9960.apds9960LITE import APDS9960LITE
 
   #Init I2C Buss
-  i2c =  machine.I2C(scl=machine.Pin(5), sda=machine.Pin(4))
+  i2c =  machine.I2C(0,scl=machine.Pin(17), sda=machine.Pin(16))
 
   apds9960=APDS9960LITE(i2c)      # Enable sensor
   apds9960.prox.enableSensor()    # Enable Proximit sensing
