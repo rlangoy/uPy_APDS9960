@@ -29,7 +29,7 @@ This driver depends on:
 
 Tested on:
       | Sensor:   `GY-9960LLC <https://www.aliexpress.com/item/32738206621.html>`_
-      | Devboard: Node MCU v1.0
+      | Devboard: Node MCU v1.0 & Raspberry PI Pico
       | Firmware: `esp8266-20191220-v1.12.bi <http://micropython.org/resources/firmware/esp8266-20191220-v1.12.bin>`_        
 
 Installation
@@ -44,7 +44,7 @@ The steps above is descsribed in the `Thonny IDE tutorial`_.
 Examples
 ========
 The examples in theis respository uses the NodeMCU devboard the devboard to use rpi pico please change the I2C inferface as show in the code below
-... code-block:: python
+.. code-block:: python
   #Change I2C interface from: 
   # i2c =  machine.I2C(0,scl=machine.Pin(17), sda=machine.Pin(16))
   # to
