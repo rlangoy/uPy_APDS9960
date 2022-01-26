@@ -194,8 +194,8 @@ If successful the output should be:
 
   Scan i2c bus...
   i2c devices found: 1
-  Decimal address:  57  | Hexa address:  0x39
-  Found ADPS9960: Device ID:  b'\xa8'
+  Decimal address:  57  | Hexa address:  0x39  
+  Found ADPS- 9960
 
 
 .. note:: Be aware if the output shows: ::
