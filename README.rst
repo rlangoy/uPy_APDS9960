@@ -186,10 +186,7 @@ If things does not work try to run the script below to verify that it i2c commun
             else:
                 deviceID=9960
 
-            if(deviceID==9960):
-                print("Found ADPS-",deviceID)
-            else:
-                print("Warning !!!!\n Did not found ADPS-9960 but:\n  Found ADPS-",deviceID)
+            print("Found ADPS-",deviceID)
 
 If successful the output should be:
 
