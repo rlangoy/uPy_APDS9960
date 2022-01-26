@@ -143,23 +143,34 @@ If things does not work try to run the script below to verify that it i2c commun
 
 .. code:: python
 
-  import machine
-  i2c =  machine.I2C(0,scl=machine.Pin(17), sda=machine.Pin(16))
-   
-  print('Scan i2c bus...')
-  devices = i2c.scan()
+    import machine
+    i2c =  machine.I2C(0,scl=machine.Pin(17), sda=machine.Pin(16))
 
-  if len(devices) == 0:
-    print("No i2c device !")
-  else:
-    print('i2c devices found:',len(devices))
+    print('Scan i2c bus...')
+    devices = i2c.scan()
 
-    for device in devices:
-      print("Decimal address: ",device," | Hexa address: ",hex(device))
-          
-      if(device==0x39): # APDS9960 Address = 0x39
-          deviceID=i2c.readfrom_mem(devices[0],0x92, 1) #G et deviceID
-          print("Found ADPS9960: Device ID: ",deviceID)
+    if len(devices) == 0:
+      print("No i2c device !")
+    else:
+      print('i2c devices found:',len(devices))
+
+      for device in devices:
+        print("Decimal address: ",device," | Hexa address: ",hex(device))
+
+        if(device==0x39): # APDS9960 Address = 0x39
+            deviceID=i2c.readfrom_mem(devices[0],0x92, 1) #Get deviceID
+            deviceID=int.from_bytes(deviceID,'big')       #Conv byte to int
+            if(deviceID==0x29):
+               deviceID=9900
+            elif(deviceID==0x20):
+                deviceID=9901
+            else:
+                deviceID=9960
+
+            if(deviceID==9960):
+                print("Found ADPS-",deviceID)
+            else:
+                print("Warning !!!!\n Did not found ADPS-9960 but:\n  Found ADPS-",deviceID)
 
 If successful the output should be:
 
