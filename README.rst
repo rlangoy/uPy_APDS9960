@@ -1,5 +1,5 @@
-MicroPython APDS-9960 RAM optimized Library
-===========================================
+MicroPython APDS-9960 & APDS-9900 RAM optimized Library
+=======================================================
 
 .. image:: https://readthedocs.org/projects/upy-apds9960/badge/?version=latest
     :target: https://upy-apds9960.readthedocs.io/en/latest/?badge=latest
@@ -10,10 +10,9 @@ MicroPython APDS-9960 RAM optimized Library
     
     <img src="https://github.com/rlangoy/uPy_APDS9960/raw/master/docs/images/breakoutboard.jpg">
 
-Another APDS9960 / GY-9960LLC micro python library optimized for ESP8266 / ESP12-E for:
+Another APDS9960 / GY-9960LLC / APDS9900 micro python library optimized for ESP8266 / ESP12-E for:
     * Light Sensing  (Ambient Light and RGB Color Sensing)
     * Proximity Sensing
-
 
 Documentation 
 =============
@@ -34,8 +33,9 @@ Tested on:
 
 Installation
 ============
-* Flash the ESP8266 with MicroPython
-* Copy the folder uPy_APDS9960 and content (apds9960LITE.py) to the ESP8266 root folder
+* Flash the device with MicroPython
+* Copy the folder uPy_APDS9960 and content (apds9960LITE.py) to the root folder for APDS9960 circuits
+* Copy the folder uPy_APDS9900 and content (apds9900LITE.py) to the root folder for APDS9900 circuits
 
 The steps above is descsribed in the `Thonny IDE tutorial`_.
 
@@ -56,8 +56,8 @@ Here is the `NodeMCU Hookup`_.
 
 .. _NodeMCU Hookup: ./node_mcu_example.rst
 
-Usage Example
-=============
+APDS9960 Example
+================
 
 .. code-block:: python
 
@@ -65,7 +65,7 @@ Usage Example
   from time import sleep_ms
   from uPy_APDS9960.apds9960LITE import APDS9960LITE
 
-  #Init I2C Buss
+  #Init I2C Buss on RP2040
   i2c =  machine.I2C(0,scl=machine.Pin(17), sda=machine.Pin(16))
 
   apds9960=APDS9960LITE(i2c)      # Enable sensor
@@ -74,6 +74,25 @@ Usage Example
   while True:
           sleep_ms(25) # wait for readout to be ready
           print(apds9960.prox.proximityLevel)   #Print the proximity value
+
+APDS9900 Example
+================
+
+.. code-block:: python
+
+    import machine
+    from time import sleep_ms
+    from uPy_APDS9900.apds9900LITE import APDS9900LITE
+
+    #Init I2C Buss on RP2040
+    i2c =  machine.I2C(0,scl=machine.Pin(17), sda=machine.Pin(16))
+
+    apds9900=APDS9900LITE(i2c)      # Enable sensor
+    apds9900.prox.enableSensor()    # Enable Proximit sensing
+
+    while True:
+            sleep_ms(25) # wait for readout to be ready
+            print(apds9900.prox.proximityLevel)   #Print the proximity value
 
 
 Hardware Set-up
