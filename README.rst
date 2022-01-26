@@ -28,8 +28,8 @@ This driver depends on:
 
 Tested on:
       | Sensor:   `GY-9960LLC <https://www.aliexpress.com/item/32738206621.html>`_
+      | Sensor:   `APDS-9900  <https://www.aliexpress.com/item/32738206621.html>`_
       | Devboard: Node MCU v1.0 & Raspberry PI Pico
-      | Firmware: `esp8266-20191220-v1.12.bi <http://micropython.org/resources/firmware/esp8266-20191220-v1.12.bin>`_        
 
 Installation
 ============
