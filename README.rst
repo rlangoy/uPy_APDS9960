@@ -92,7 +92,7 @@ APDS9900 ESP32-C3 Example
     
     while True:
             sleep_ms(25) # wait for readout to be ready
-            print(apds9900.prox.proximityLevel)   #Print the proximity valu
+            print(apds9900.prox.proximityLevel)   #Print the proximity value
 
 
 APDS9900 Raspberry Pico Example
