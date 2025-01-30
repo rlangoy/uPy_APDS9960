@@ -75,7 +75,27 @@ APDS9960 Example
           sleep_ms(25) # wait for readout to be ready
           print(apds9960.prox.proximityLevel)   #Print the proximity value
 
-APDS9900 Example
+APDS9900 ESP32-C3 Example
+================
+
+.. code-block:: python
+
+    import machine
+    from time import sleep_ms
+    from uPy_APDS9900.apds9900LITE import APDS9900LITE
+    
+    #Init Left I2C Buss on ESP32-C3
+    i2c =  machine.SoftI2C(scl=machine.Pin(9), sda=machine.Pin(8))
+    
+    apds9900=APDS9900LITE(i2c)      # Enable sensor
+    apds9900.prox.enableSensor()    # Enable Proximit sensing
+    
+    while True:
+            sleep_ms(25) # wait for readout to be ready
+            print(apds9900.prox.proximityLevel)   #Print the proximity valu
+
+
+APDS9900 Raspberry Pico Example
 ================
 
 .. code-block:: python
@@ -93,6 +113,7 @@ APDS9900 Example
     while True:
             sleep_ms(25) # wait for readout to be ready
             print(apds9900.prox.proximityLevel)   #Print the proximity value
+
 
 
 Hardware Set-up
